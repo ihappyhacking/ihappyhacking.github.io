@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 14 Xcode Toolchain 时做的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xcode Toolchain">
+<meta property="og:url" content="https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 14 Xcode Toolchain 时做的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdac14eb208f.png">
+<meta property="article:published_time" content="2016-11-05T13:59:08.000Z">
+<meta property="article:modified_time" content="2019-01-12T14:17:39.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="Xcode">
+<meta property="article:tag" content="Objective-C">
+<meta property="article:tag" content="xcrun">
+<meta property="article:tag" content="xcodebuild">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdac14eb208f.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/","path":"2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/","title":"Xcode Toolchain"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Xcode Toolchain | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Xcode-Toolchain"><span class="nav-number">2.</span> <span class="nav-text">0x01 Xcode Toolchain</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-xcrun"><span class="nav-number">3.</span> <span class="nav-text">0x02 xcrun</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-xcodebuild"><span class="nav-number">4.</span> <span class="nav-text">0x03 xcodebuild</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-genstrings"><span class="nav-number">5.</span> <span class="nav-text">0x04 genstrings</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-ibtool"><span class="nav-number">6.</span> <span class="nav-text">0x05 ibtool</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x06-iprofiler"><span class="nav-number">7.</span> <span class="nav-text">0x06 iprofiler</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x07-xed"><span class="nav-number">8.</span> <span class="nav-text">0x07 xed</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x08-agvtool"><span class="nav-number">9.</span> <span class="nav-text">0x08 agvtool</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x09-Other-Tools"><span class="nav-number">10.</span> <span class="nav-text">0x09 Other Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0901-Compilation-amp-Assembly"><span class="nav-number">10.1.</span> <span class="nav-text">0x0901 Compilation &amp; Assembly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0902-Processors"><span class="nav-number">10.2.</span> <span class="nav-text">0x0902 Processors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0903-Libraries"><span class="nav-number">10.3.</span> <span class="nav-text">0x0903 Libraries</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0904-Scripting"><span class="nav-number">10.4.</span> <span class="nav-text">0x0904 Scripting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0905-Packages"><span class="nav-number">10.5.</span> <span class="nav-text">0x0905 Packages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0906-Documentation"><span class="nav-number">10.6.</span> <span class="nav-text">0x0906 Documentation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0907-Core-Data"><span class="nav-number">10.7.</span> <span class="nav-text">0x0907 Core Data</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Xcode Toolchain | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xcode Toolchain
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-11-05 21:59:08" itemprop="dateCreated datePublished" datetime="2016-11-05T21:59:08+08:00">2016-11-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 22:17:39" itemprop="dateModified" datetime="2019-01-12T22:17:39+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/" class="post-meta-item leancloud_visitors" data-flag-title="Xcode Toolchain" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://i.loli.net/2018/11/01/5bdac14eb208f.png"></p>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>这篇文章是自己在学习 <a target="_blank" rel="noopener" href="https://gum.co/cfhipsterref">CFHipsterRef</a> Chapter 14 Xcode Toolchain 时做的笔记。</p>
+<span id="more"></span>
+
+<h1 id="0x01-Xcode-Toolchain"><a href="#0x01-Xcode-Toolchain" class="headerlink" title="0x01 Xcode Toolchain"></a>0x01 Xcode Toolchain</h1><p>从 Mavericks 开始，作为一个开发者在 Mac 上开始只需要一个命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select -- install</span><br></pre></td></tr></table></figure>
+
+<p>这将会安装命令行工具，这是编译 Objective-C 代码所必要的。</p>
+<h1 id="0x02-xcrun"><a href="#0x02-xcrun" class="headerlink" title="0x02 xcrun"></a>0x02 xcrun</h1><p><code>xcrun</code> 是 Xcode 命令行工具的基础。有了它，所有其他的工具都可以被调用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xcrun xcodebuild</span><br></pre></td></tr></table></figure>
+
+<p>除了运行命令，<code>xcrun</code> 可以找到二进制文件并显示 SDK 的路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ xcrun --find clang</span><br><span class="line">$ xcrun --sdk iphoneos --find pngcrush</span><br><span class="line">$ xcrun --sdk macosx --show-sdk-path</span><br></pre></td></tr></table></figure>
+
+<p>由于 <code>xcrun</code> 是执行在活动的 Xcode 版本（由 <code>xcode-select</code> 设置）的上下文中，所以在单系统上很容易共存多个版本的 Xcode 工具链（toolchain）。</p>
+<p>在脚本和其他外部工具中使用 <code>xcrun</code> 具有确保跨不同环境的统一性的优点。例如，Xcode 附带了一个 Git 的自定义分布（custom distribution）。通过调用 <code>$ xcrun git</code> 而不只是 <code>$ git</code>，构建系统可以保证运行正确的分布。</p>
+<h1 id="0x03-xcodebuild"><a href="#0x03-xcodebuild" class="headerlink" title="0x03 xcodebuild"></a>0x03 xcodebuild</h1><p>第二个最重要的 Xcode 工具是 <code>xcodebuild</code>，顾名思义，构建 Xcode 项目（projects）和工作空间（workspaces）。</p>
+<p>不需要传递任何构建设置，<code>xcodebuild</code> 默认使用 Xcode.app 最近使用的方案（scheme）和配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xcodebuild</span><br></pre></td></tr></table></figure>
+
+<p>然而，从方案，targets，配置（configuration），目标地址（destination），SDK 和 derived data 位置的一切都可以配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ xcodebuild -workspace NSHipster.xcworkspace \</span><br><span class="line">             -scheme <span class="string">&quot;NSHipster&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里有 7 个可以按照顺序被调用的构建动作：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">build</td>
+<td align="left">在构建根目录（build root，<code>SYMROOT</code>）中构建目标（target）。这是默认的构建动作。</td>
+</tr>
+<tr>
+<td align="left">analyze</td>
+<td align="left">从构建根目录中构建并分析一个目标或方案。需要指定一个方案。</td>
+</tr>
+<tr>
+<td align="left">archive</td>
+<td align="left">从构建根目录中归档（Archive）一个方案。需要指定一个方案。</td>
+</tr>
+<tr>
+<td align="left">test</td>
+<td align="left">从构建根目录中测试一个方案。需要指定一个方案和可选的目标地址。</td>
+</tr>
+<tr>
+<td align="left">installsrc</td>
+<td align="left">复制项目的源到源根目录（source root，<code>SRCROOT</code>）。</td>
+</tr>
+<tr>
+<td align="left">install</td>
+<td align="left">构建目标并且安装到目标在分发根目录（distribution root，DSTROOT）的安装目录中。</td>
+</tr>
+<tr>
+<td align="left">clean</td>
+<td align="left">从构建根目录移除构建的产品（products）和中间文件。</td>
+</tr>
+</tbody></table>
+<h1 id="0x04-genstrings"><a href="#0x04-genstrings" class="headerlink" title="0x04 genstrings"></a>0x04 genstrings</h1><p><code>genstrings</code> 工具从指定的 C 或 Objective-C 源文件生成一个 <code>.strings</code> 文件。<code>.strings</code> 文件用于在不同语言环境中本地化一个应用程序，在 Apple 的 Cocoa Core Competencies 中的 [“Internationalization”](<a target="_blank" rel="noopener" href="https://developer.apple.com/library/mac/documentation/general/conceptual/devpedia-cocoacore/-">https://developer.apple.com/library/mac/documentation/general/conceptual/devpedia-cocoacore/-</a> Internationalization.html) 下有描述。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ genstrings -a \</span><br><span class="line">             /path/to/source/files/*.m</span><br></pre></td></tr></table></figure>
+
+<p>对于在源文件中每次使用的 <code>NSLocalizedString</code> 宏，<code>genstrings</code> 都会将 key 和注释附加到目标文件中。然后由开发者为每个目标语言环境创建一个该文件的副本，并翻译该文件。</p>
+<p>fr.lproj&#x2F;Localizable.strings</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/* No comment provided by engineer. */</span><br><span class="line">&quot;Username&quot;=&quot;nom d&#x27;utilisateur&quot;;</span><br><span class="line">/* &#123;User First Name&#125;&#x27;s Profile */</span><br><span class="line">&quot;%@&#x27;s Profile&quot;=&quot;profil de %1$@&quot;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x05-ibtool"><a href="#0x05-ibtool" class="headerlink" title="0x05 ibtool"></a>0x05 ibtool</h1><p><code>genstrings</code> 是用于源代码，而 <code>ibtool</code> 是用于 XIB 文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ibtool --generate-strings-file \</span><br><span class="line">         Localizable.strings \</span><br><span class="line">         en.lpoj/Interface.xib</span><br></pre></td></tr></table></figure>
+
+<p>虽然本地化是它的主要用例，<code>ibtool</code> 有用于跟 Interface Builder 文档工作的几个其他功能。可以使用 <code>--convert</code> 标记来改变对一个类名的所有引用。可以使用 <code>--upgrade</code> 标记将一个文档升级到最新版本。甚至可以分别使用 <code>--enable-auto-layout</code>，<code>--update-frames</code> 和 <code>--update-constraints</code> 标记来启动 Auto Layout，以及更新 frames &amp; constraints（约束）。</p>
+<h1 id="0x06-iprofiler"><a href="#0x06-iprofiler" class="headerlink" title="0x06 iprofiler"></a>0x06 iprofiler</h1><p><code>iprofiler</code> 不需要启动 Instruments.app 测算一个 app 的性能：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ iprofiler -allocations \</span><br><span class="line">            -leaks \</span><br><span class="line">            -T 15s \</span><br><span class="line">            -o perf \</span><br><span class="line">            -a NSHipster</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令将附加到 NSHipster.app 上，运行 15 秒，仪器分配和泄露，然后将结果写入 <code>pref</code> 中。然后这个输出可以通过 Instruments.app 读取和显示。</p>
+<h1 id="0x07-xed"><a href="#0x07-xed" class="headerlink" title="0x07 xed"></a>0x07 xed</h1><p>这个命令简单地打开 Xcode。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xed NSHipster.xcworkspace</span><br></pre></td></tr></table></figure>
+
+<p>通过传递 <code>-w</code> 标记，<code>xed</code> 会等待直到所有一打开的窗口都关闭。这个对于脚本化用户交互非常有用，例如提示用户编辑一个文件，一旦完成就继续。</p>
+<h1 id="0x08-agvtool"><a href="#0x08-agvtool" class="headerlink" title="0x08 agvtool"></a>0x08 agvtool</h1><p>通过在 <code>Info.plist</code> 文件中读写一个适当的值， <code>agvtool</code> 可以用于修改 Xcode 项目的版本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ agvtool what-version</span><br></pre></td></tr></table></figure>
+
+<p>…返回当前项目的版本。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ agvtool next-version</span><br></pre></td></tr></table></figure>
+
+<p>…增加 <strong>当前项目的版本</strong> 和 <strong>当前 DYLIB 的版本</strong>。传递 <code>-all</code> 选项也会更新 <code>Info.plist</code> 中的 <code>CFBundleVersion</code> key。</p>
+<h1 id="0x09-Other-Tools"><a href="#0x09-Other-Tools" class="headerlink" title="0x09 Other Tools"></a>0x09 Other Tools</h1><p>除了上述的 Xcode tools，还有一些其他可执行文件可以被 <code>xcrun</code> 调用。</p>
+<h2 id="0x0901-Compilation-amp-Assembly"><a href="#0x0901-Compilation-amp-Assembly" class="headerlink" title="0x0901 Compilation &amp; Assembly"></a>0x0901 Compilation &amp; Assembly</h2><ul>
+<li>clang：Compiles C，C，Objective-C 和 Objective-C 源文件。</li>
+<li>lldb：Debugs C，C，Objective-C 和 Objective-C 程序。</li>
+<li>nasm：汇编文件。</li>
+<li>ndisasm：反汇编文件。</li>
+<li>symbols：显示一个文件或过程（process）的符号信息。</li>
+<li>strip：删除或修改附加到汇编器和链接编辑器输出的符号表。</li>
+<li>atos：将数字地址转换为二进制映像或进程的符号。</li>
+</ul>
+<h2 id="0x0902-Processors"><a href="#0x0902-Processors" class="headerlink" title="0x0902 Processors"></a>0x0902 Processors</h2><ul>
+<li>unifdef：从代码中删除条件的 <code>#ifdef</code> 宏。</li>
+<li>ifnames：在 C++ 文件中查找条件。</li>
+</ul>
+<h2 id="0x0903-Libraries"><a href="#0x0903-Libraries" class="headerlink" title="0x0903 Libraries"></a>0x0903 Libraries</h2><ul>
+<li>ld：将对象文件和库组合到单个文件中。</li>
+<li>otool：显示对象文件或库的指定部分。</li>
+<li>ar：创建和维护库归档。</li>
+<li>libtool：创建一个用于链接编辑器 <code>ld</code> 的库。</li>
+<li>ranlib：更新归档库的内容目录。</li>
+<li>mksdk：制作和更新 SDK。</li>
+<li>lorder：列出对象文件的依赖关系。</li>
+</ul>
+<h2 id="0x0904-Scripting"><a href="#0x0904-Scripting" class="headerlink" title="0x0904 Scripting"></a>0x0904 Scripting</h2><ul>
+<li>sdef：脚本定义提取器。</li>
+<li>sdp：脚本定义处理器。</li>
+<li>amlint：Checks Automator actions for problems.</li>
+</ul>
+<h2 id="0x0905-Packages"><a href="#0x0905-Packages" class="headerlink" title="0x0905 Packages"></a>0x0905 Packages</h2><ul>
+<li>installer：安装 OS X 包（packages）。</li>
+<li>pkgutil：读取和操作 OS X 包。</li>
+<li>lsbom：列出一个 bom（Bill of Materials） 的内容。</li>
+</ul>
+<h2 id="0x0906-Documentation"><a href="#0x0906-Documentation" class="headerlink" title="0x0906 Documentation"></a>0x0906 Documentation</h2><ul>
+<li>headerdoc：进程头文档。</li>
+<li>gatherheaderdoc：编译和链接 <code>headerdoc</code> 输出。</li>
+<li>headerdoc2html：从 <code>headerdoc</code> 输出生成 HTML。</li>
+<li>hdxml2manxml：从 <code>headerdoc</code> XML 输出翻译为使用 <code>xml2man</code> 的文件。</li>
+<li>xml2man：将 Man Page Generation Language（MPGL）XML 文件转换为 manual pages。</li>
+</ul>
+<h2 id="0x0907-Core-Data"><a href="#0x0907-Core-Data" class="headerlink" title="0x0907 Core Data"></a>0x0907 Core Data</h2><ul>
+<li>momc：编译 Managed Object Model（.mom）文件</li>
+<li>mapc：编译 Core Data Mapping Model（.xcmappingmodel）文件</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Xcode/" rel="tag"># Xcode</a>
+              <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+              <a href="/tags/xcrun/" rel="tag"># xcrun</a>
+              <a href="/tags/xcodebuild/" rel="tag"># xcodebuild</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter13-Dictionary-Services/" rel="prev" title="Dictionary Services">
+                  <i class="fa fa-chevron-left"></i> Dictionary Services
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/" rel="next" title="Third Party Tools">
+                  Third Party Tools <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

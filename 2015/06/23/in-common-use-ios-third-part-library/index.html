@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="收集一些在 iOS 开发中常用的第三方开源库。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 开发常用的第三方开源库">
+<meta property="og:url" content="https://meilbn.com/2015/06/23/in-common-use-ios-third-part-library/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="收集一些在 iOS 开发中常用的第三方开源库。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://camo.githubusercontent.com/15577b87be4403d9e2ede4d5cd5b9fccbd1d03ae/687474703a2f2f696d61676573302e636e626c6f67732e636f6d2f626c6f67323031352f3439373237392f3230313530362f3134313230343334333438363135312e676966">
+<meta property="og:image" content="https://camo.githubusercontent.com/6ed028acbf67707d622344e0ef1bc3b098425b50/687474703a2f2f662e636c2e6c792f6974656d732f32473146315a304d306b306832553356317033392f535650726f67726573734855442e676966">
+<meta property="og:image" content="https://github.com/chiunam/CTAssetsPickerController/raw/master/Screenshot.png">
+<meta property="og:image" content="https://camo.githubusercontent.com/be57d040ec0ce5d6467fb73564c6bcb6c76d5a7b/687474703a2f2f6472696262626c652e73332e616d617a6f6e6177732e636f6d2f75736572732f363431302f73637265656e73686f74732f313235343433392f666f726d2d616e696d6174696f6e2d5f6769665f2e676966">
+<meta property="og:image" content="https://camo.githubusercontent.com/3fc68ae90647a06add9ade7d13b7631c62e8e7cf/687474703a2f2f672e7265636f726469742e636f2f524b54394f4548626f4c2e676966">
+<meta property="og:image" content="https://camo.githubusercontent.com/f782cd6eff4fda49f07502f8cc01c0c2d2edc2ed/68747470733a2f2f7261772e6769746875622e636f6d2f737472656b6675732f5450466c6f6174526174696e67566965772f6d61737465722f5450466c6f6174526174696e675669657744656d6f2e676966">
+<meta property="article:published_time" content="2015-06-23T07:10:33.000Z">
+<meta property="article:modified_time" content="2019-01-12T09:02:35.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="GitHub">
+<meta property="article:tag" content="开源">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://camo.githubusercontent.com/15577b87be4403d9e2ede4d5cd5b9fccbd1d03ae/687474703a2f2f696d61676573302e636e626c6f67732e636f6d2f626c6f67323031352f3439373237392f3230313530362f3134313230343334333438363135312e676966">
+
+
+<link rel="canonical" href="https://meilbn.com/2015/06/23/in-common-use-ios-third-part-library/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2015/06/23/in-common-use-ios-third-part-library/","path":"2015/06/23/in-common-use-ios-third-part-library/","title":"iOS 开发常用的第三方开源库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>iOS 开发常用的第三方开源库 | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#First%EF%BC%8CThanks-Open-Source%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-number">1.</span> <span class="nav-text">First，Thanks Open Source！！！</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Network"><span class="nav-number">2.</span> <span class="nav-text">Network</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JSON"><span class="nav-number">3.</span> <span class="nav-text">JSON</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Auto-Layout"><span class="nav-number">4.</span> <span class="nav-text">Auto Layout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UITableView"><span class="nav-number">5.</span> <span class="nav-text">UITableView</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Navigation"><span class="nav-number">6.</span> <span class="nav-text">Navigation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TabBar"><span class="nav-number">7.</span> <span class="nav-text">TabBar</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Animation"><span class="nav-number">8.</span> <span class="nav-text">Animation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HUD"><span class="nav-number">9.</span> <span class="nav-text">HUD</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Image-Picker"><span class="nav-number">10.</span> <span class="nav-text">Image Picker</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E6%B5%8F%E8%A7%88"><span class="nav-number">11.</span> <span class="nav-text">图片浏览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Keyboard"><span class="nav-number">12.</span> <span class="nav-text">Keyboard</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TextField"><span class="nav-number">13.</span> <span class="nav-text">TextField</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ScrollView"><span class="nav-number">14.</span> <span class="nav-text">ScrollView</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Button"><span class="nav-number">15.</span> <span class="nav-text">Button</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Images"><span class="nav-number">16.</span> <span class="nav-text">Images</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Log"><span class="nav-number">17.</span> <span class="nav-text">Log</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cache"><span class="nav-number">18.</span> <span class="nav-text">Cache</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Others"><span class="nav-number">19.</span> <span class="nav-text">Others</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2015/06/23/in-common-use-ios-third-part-library/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="iOS 开发常用的第三方开源库 | Happy Hacking">
+      <meta itemprop="description" content="收集一些在 iOS 开发中常用的第三方开源库。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS 开发常用的第三方开源库
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2015-06-23 15:10:33" itemprop="dateCreated datePublished" datetime="2015-06-23T15:10:33+08:00">2015-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 17:02:35" itemprop="dateModified" datetime="2019-01-12T17:02:35+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2015/06/23/in-common-use-ios-third-part-library/" class="post-meta-item leancloud_visitors" data-flag-title="iOS 开发常用的第三方开源库" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+            <div class="post-description">收集一些在 iOS 开发中常用的第三方开源库。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="First，Thanks-Open-Source！！！"><a href="#First，Thanks-Open-Source！！！" class="headerlink" title="First，Thanks Open Source！！！"></a>First，Thanks Open Source！！！</h1><hr>
+<h1 id="Network"><a href="#Network" class="headerlink" title="Network"></a>Network</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a>：最常用的网络请求库</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/rs/SDWebImage">SDWebImage</a>：加载网络图片</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dustturtle/RealReachability">RealReachability</a>：We need to observe the REAL reachability of network for iOS. That’s what RealReachability do.</li>
+</ol>
+<h1 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/icanzilb/JSONModel">JSONModel</a>：模型 &amp; 字典转换框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Mantle/Mantle">Mantle</a>：模型 &amp; 字典转换框架</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/CoderMJLee/MJExtension">MJExtension</a>：获取 JSON 数据之后，转换成本地的 Model 类</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ibireme/YYModel">YYModel</a>：高性能 iOS&#x2F;OSX 模型转换框架。</li>
+</ol>
+<h1 id="Auto-Layout"><a href="#Auto-Layout" class="headerlink" title="Auto Layout"></a>Auto Layout</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/SnapKit/Masonry">Masonry</a>：Masonry 是一个轻量级的布局框架，拥有自己的描述语法，采用更优雅的链式语法封装自动布局，简洁明了，并具有高可读性，而且同时支持 iOS 和 Max OS X。(这句话来自 <a target="_blank" rel="noopener" href="http://www.cocoachina.com/ios/20141219/10702.html">CocoaChina</a>)</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/SnapKit/SnapKit">SnapKit</a>：Swift 上的 Auto Layout 框架，也同时支持 iOS 和 Max OS X。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/PureLayout/PureLayout">PureLayout</a>：PureLayout 是 iOS &amp; OS X Auto Layout 的终极 API——非常简单，又非常强大。PureLayout 通过一个全面的 Auto Layout API 扩展了 UIView &#x2F; NSView, NSArray 和 NSLayoutConstraint，仿照苹果自身的框架。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gsdios/SDAutoLayout">SDAutoLayout</a>：AutoLayout 一行代码搞定自动布局！支持 Cell 和 Tableview 高度自适应，Label 和 ScrollView 内容自适应，致力于做最简单易用的 AutoLayout 库。The most easy way for autoLayout. Based Runtime.</li>
+</ol>
+<h1 id="UITableView"><a href="#UITableView" class="headerlink" title="UITableView"></a>UITableView</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/CoderMJLee/MJRefresh">MJRefresh</a>：简单好用的上&#x2F;下拉刷新<br><img src="https://camo.githubusercontent.com/15577b87be4403d9e2ede4d5cd5b9fccbd1d03ae/687474703a2f2f696d61676573302e636e626c6f67732e636f6d2f626c6f67323031352f3439373237392f3230313530362f3134313230343334333438363135312e676966" alt="MJRefresh" title="MJRefresh"></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/enormego/EGOTableViewPullRefresh">EGOTableViewPullRefresh</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MortimerGoro/MGSwipeTableCell.git">MGSwipeTableCell</a>：支持多种侧滑模式</li>
+</ol>
+<h1 id="Navigation"><a href="#Navigation" class="headerlink" title="Navigation"></a>Navigation</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/JazysYu/JZNavigationExtension">JZNavigationExtension</a>：为UINavigationController集成了许多方便的功能点，同时为它打开了一些隐藏功能。</li>
+</ol>
+<h1 id="TabBar"><a href="#TabBar" class="headerlink" title="TabBar"></a>TabBar</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/antiguab/BATabBarController">BATabBarController</a>：炫酷 Tabbar 切换动画</li>
+</ol>
+<h1 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/facebook/pop">Pop</a>：Facebook 出品，一些效果可以查看<a target="_blank" rel="noopener" href="https://github.com/schneiderandre/popping">popping</a> 这个库</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jwilling/JNWSpringAnimation">JNWSpringAnimation</a>：CAKeyframeAnimation 的子类，它支持创建阻尼动画效果。</li>
+</ol>
+<h1 id="HUD"><a href="#HUD" class="headerlink" title="HUD"></a>HUD</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/jdg/MBProgressHUD">MBProgressHUD</a>：挺好看的加载等待提示</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/TransitApp/SVProgressHUD">SVProgressHUD</a>：一个轻量级的 HUD<br><img src="https://camo.githubusercontent.com/6ed028acbf67707d622344e0ef1bc3b098425b50/687474703a2f2f662e636c2e6c792f6974656d732f32473146315a304d306b306832553356317033392f535650726f67726573734855442e676966" alt="SVProgressHUD" title="SVProgressHUD"></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/JonasGessner/JGProgressHUD">JGProgressHUD</a>：挺好看的一个 HUD</li>
+</ol>
+<h1 id="Image-Picker"><a href="#Image-Picker" class="headerlink" title="Image Picker"></a>Image Picker</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/chiunam/CTAssetsPickerController">CTAssetsPickerController</a>：从相册中选择图片<br><img src="https://github.com/chiunam/CTAssetsPickerController/raw/master/Screenshot.png" alt="CTAssetsPickerController" title="CTAssetsPickerController"></li>
+</ol>
+<h1 id="图片浏览"><a href="#图片浏览" class="headerlink" title="图片浏览"></a>图片浏览</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/ideaismobile/IDMPhotoBrowser">IDMPhotoBrowser</a></li>
+</ol>
+<h1 id="Keyboard"><a href="#Keyboard" class="headerlink" title="Keyboard"></a>Keyboard</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/hackiftekhar/IQKeyboardManager">IQKeyboardManager</a>：一行代码都不需要就可以处理键盘事件，非常非常好用！！！</li>
+</ol>
+<h1 id="TextField"><a href="#TextField" class="headerlink" title="TextField"></a>TextField</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/jverdi/JVFloatLabeledTextField">JVFloatLabeledTextField</a>：很好看的输入框，框内的提示文字在用户开始输入文本的时候会飞到输入框的上方<br><img src="https://camo.githubusercontent.com/be57d040ec0ce5d6467fb73564c6bcb6c76d5a7b/687474703a2f2f6472696262626c652e73332e616d617a6f6e6177732e636f6d2f75736572732f363431302f73637265656e73686f74732f313235343433392f666f726d2d616e696d6174696f6e2d5f6769665f2e676966" alt="JVFloatLabeledTextField" title="JVFloatLabeledTextField"></li>
+</ol>
+<h1 id="ScrollView"><a href="#ScrollView" class="headerlink" title="ScrollView"></a>ScrollView</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/nicklockwood/iCarousel">iCarousel</a>：iCarousel 是一个用来简化在 iOS 上实现旋转木马时的视图切换效果，支持 iPad，提供多种切换效果。内容类似的页面需要并排列出来，供用户选择。iCarousel 具有非常酷的 3D 效果，比如经典的 CoverFlow, TimeMachine。另外还具有线性，圆柱状等其它效果。可用于图片选择，书籍选择，网页选择等。(介绍来自 <a target="_blank" rel="noopener" href="http://www.oschina.net/p/icarousel">OSChina</a>，效果非常多，去 GitHub 上去看吧)</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/nicklockwood/SwipeView">SwipeView</a>：滚动视图，可以根据回调方法做出懒加载效果，也就是说等下一个视图滚动结束之后再加载该视图内容，而不是一滑动的时候就加载下一个视图内容。<br><img src="https://camo.githubusercontent.com/3fc68ae90647a06add9ade7d13b7631c62e8e7cf/687474703a2f2f672e7265636f726469742e636f2f524b54394f4548626f4c2e676966" alt="SwipeView" title="SwipeView"></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dzenbot/DZNEmptyDataSet">DZNEmptyDataSet</a>：展示无数据时的占位视图</li>
+</ol>
+<h1 id="Button"><a href="#Button" class="headerlink" title="Button"></a>Button</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/strekfus/TPFloatRatingView">TPFloatRatingView</a>：挺不错的一个打分控件<br><img src="https://camo.githubusercontent.com/f782cd6eff4fda49f07502f8cc01c0c2d2edc2ed/68747470733a2f2f7261772e6769746875622e636f6d2f737472656b6675732f5450466c6f6174526174696e67566965772f6d61737465722f5450466c6f6174526174696e675669657744656d6f2e676966" alt="TPFloatRatingView" title="TPFloatRatingView"></li>
+</ol>
+<h1 id="Images"><a href="#Images" class="headerlink" title="Images"></a>Images</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/path/FastImageCache">FastImageCache</a>：Path 出品的图片加载缓存库</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/liuzhiyi1992/ZYCornerRadius">ZYCornerRadius</a>：一句代码，圆角风雨无阻。避免为 UIImageView 设置圆角时触发离屏渲染所带来的性能损耗，两种工作方式：Category 和 UIImageView 子类。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Flipboard/FLAnimatedImage">FLAnimatedImage</a>：播放 GIF 图片</li>
+</ol>
+<h1 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/DeveloperLx/LxDBAnything">LxDBAnything</a>：简化打 log 时的语句，再也不必考虑蛋疼的格式控制符了，甚至连引号都不需要写！</li>
+</ol>
+<h1 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/pinterest/PINCache">PINCache</a>：比较成熟的缓存框架。</li>
+</ol>
+<h1 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/kconner/KMCGeigerCounter">KMCGeigerCounter</a>：测界面桢率</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mac-cain13/R.swift">R.swift</a>：如果你熟悉 Android 开发，你可能知道在 Android 中有一个 R 类，你可以通过 R 来安全地获取到应用包中的各种资源。而在 iOS 开发中，我们往往需要通过指定资源的名字来获取一个资源 (例如 UIImage 的 imageWithName:)。R.swift 在 iOS 开发中实现了一个类似 Android R class 的功能，使用这个框架，你可以用更安全的方式来获取资源。值得一提的是这个库对资源的检查都是在编译时完成的，本身并不会进入到你的项目中去，也不会对 app 的性能产生影响。（介绍来自 <a target="_blank" rel="noopener" href="http://www.infoq.com/cn/news/2015/08/ios-weekly-apple-tv">InfoQ</a>）</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/12207480/TYPagerController">TYPagerController</a>：简单，支持定制，页面控制器，可以滚动内容和标题栏，包含多种 barStyle。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/joeldev/JLRoutes">JLRoutes</a>：JLRoutes is advanced URL parsing with a block-based callback API. It is designed to make it very easy to handle complex URL schemes in your application without having to do any URL or string parsing of any kind.</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/joggerplus/JPFPSStatus">JPFPSStatus</a>：JPFPSStatus 是用来显示 FPS 状态在 iOS 状态栏，FPS 是一秒钟渲染多少帧 Frame Per Second &#x3D; FPS，FPS 的值最佳为 60 左右，一般来说小于这个值就较为卡顿了。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zwaldowski/BlocksKit">BlocksKit</a>：The Objective-C block utilities you always wish you had.</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+              <a href="/tags/GitHub/" rel="tag"># GitHub</a>
+              <a href="/tags/%E5%BC%80%E6%BA%90/" rel="tag"># 开源</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/06/09/my-purchased-software/" rel="prev" title="我购买的软件">
+                  <i class="fa fa-chevron-left"></i> 我购买的软件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/07/02/browser-extensions/" rel="next" title="浏览器扩展插件">
+                  浏览器扩展插件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

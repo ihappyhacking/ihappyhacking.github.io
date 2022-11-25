@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="定位到 App 崩溃的那一行代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xcode Debug 技巧之一">
+<meta property="og:url" content="https://meilbn.com/2015/07/06/iOS-Xcode-Debug-Skills-0x00/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="定位到 App 崩溃的那一行代码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab871dd6a5.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab8722b40d.jpg">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab8722a662.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab87229a5e.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab8717b83b.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab8717ba07.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab8721f7eb.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab8722087b.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab87229681.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab8722a4ba.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab98cbd9b2.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab98c90bd1.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdab98cbe164.png">
+<meta property="article:published_time" content="2015-07-06T08:48:50.000Z">
+<meta property="article:modified_time" content="2019-01-12T09:01:03.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Xcode">
+<meta property="article:tag" content="Debug">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdab871dd6a5.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2015/07/06/iOS-Xcode-Debug-Skills-0x00/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2015/07/06/iOS-Xcode-Debug-Skills-0x00/","path":"2015/07/06/iOS-Xcode-Debug-Skills-0x00/","title":"Xcode Debug 技巧之一"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Xcode Debug 技巧之一 | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.</span> <span class="nav-text">0x01 操作步骤</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-%E6%9B%B4%E6%96%B0"><span class="nav-number">3.</span> <span class="nav-text">0x02 更新</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2015/07/06/iOS-Xcode-Debug-Skills-0x00/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Xcode Debug 技巧之一 | Happy Hacking">
+      <meta itemprop="description" content="定位到 App 崩溃的那一行代码。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xcode Debug 技巧之一
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2015-07-06 16:48:50" itemprop="dateCreated datePublished" datetime="2015-07-06T16:48:50+08:00">2015-07-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 17:01:03" itemprop="dateModified" datetime="2019-01-12T17:01:03+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开发工具</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2015/07/06/iOS-Xcode-Debug-Skills-0x00/" class="post-meta-item leancloud_visitors" data-flag-title="Xcode Debug 技巧之一" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+            <div class="post-description">定位到 App 崩溃的那一行代码。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>这个技巧是在新浪微博上看到的，源地址为<a target="_blank" rel="noopener" href="https://weibo.com/1745945040/CpBv73dSR?type=comment#_rnd1436172574844">戴铭的这条微博</a>，不过看评论有说不懂的，其实第一次看这个微博，看了这些图，我也没怎么在意，完全是因为 App 崩溃后 Xcode 经常是定位到 App 的起始方法里面，让人有点抓狂，如果项目是用 OC 写的，那么可能是如下这个情况：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab871dd6a5.png"></p>
+<p>Swift 就是微博配图里面的那样：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab8722b40d.jpg"></p>
+<p>看完这个微博之后，我并没有转发，但是呢，就在当天下午，项目经理让我改一个 Bug，然后我重现这个 Bug 之后，发现定位到的代码就是上面 OC 版本的那样子，以前也经常遇到，然后我就跟平时一样，查看 Console 中的 Log，打算从 Log 上下手，当我看到 Log 我就又懵逼了，还是跟以前一样，这个 Log 并没有什么卵用：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab8722a662.png"></p>
+<p>就告诉了我原因是数组越界，然而项目大了，界面复杂一点了，我怎么知道是哪个数组越界了，这样找起来不是非常浪费时间吗？然后我就想起来，之前看到的那条微博，然后我马上去微博上找了，因为我还记得是大神叶孤城___转发的，然后我就找到了，然后看了下，跟着配图操作了一下，哇擦类，竟然成功了！然后我就打算写一篇文章，记录在自己的博客上面，所以就有了这篇文章。好了，废话说了这么多，开始一步步操作吧。</p>
+<h1 id="0x01-操作步骤"><a href="#0x01-操作步骤" class="headerlink" title="0x01 操作步骤"></a>0x01 操作步骤</h1><p>首先，当出现这中崩溃，Xcode 是直接帮我们打开了 Debug navigator 界面，就是上面 OC 版本的那样子，然后我们点击标识为 0 的进程：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab87229a5e.png"></p>
+<p>然后在 Console 中输入如下命令，然后回车：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab8717b83b.png"></p>
+<p>接着，我们切换到 Breakpoint navigator：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab8717ba07.png"></p>
+<p>点击最下面的“+”号，选择 Add Exception Breakpoint：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab8721f7eb.png"></p>
+<p>然后右键选择 Edit Breakpoint…：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab8722087b.png"></p>
+<p>接着点击 Add Action：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab87229681.png"></p>
+<p>然后输入刚刚的命令：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab8722a4ba.png"></p>
+<p>最后，重新运行，然后重复之前的操作，将 Bug 重现一下，就会定位到导致 App 崩溃的那一行代码了：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab98cbd9b2.png"></p>
+<p>下面是 Console 的 Log：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdab98c90bd1.png"></p>
+<p>就是这么简单啦！</p>
+<h1 id="0x02-更新"><a href="#0x02-更新" class="headerlink" title="0x02 更新"></a>0x02 更新</h1><p>2015.12.04 更新</p>
+<p>按照上面一步步设置之后，在当前项目是可以的，不过在新项目当中就不能用了，还要再手动设置一次，很麻烦，再做如下这步，就可以在全部的项目当中使用了，不用每一个新项目都设置一遍：<br><img src="https://i.loli.net/2018/11/01/5bdab98cbe164.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+              <a href="/tags/Xcode/" rel="tag"># Xcode</a>
+              <a href="/tags/Debug/" rel="tag"># Debug</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/07/02/browser-extensions/" rel="prev" title="浏览器扩展插件">
+                  <i class="fa fa-chevron-left"></i> 浏览器扩展插件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/07/20/my-xcode-plug-in-list/" rel="next" title="Xcode 插件列表">
+                  Xcode 插件列表 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

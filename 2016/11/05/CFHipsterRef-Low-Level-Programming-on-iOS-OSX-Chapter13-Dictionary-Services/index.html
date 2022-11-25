@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 13 Dictionary Services 时做的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dictionary Services">
+<meta property="og:url" content="https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter13-Dictionary-Services/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 13 Dictionary Services 时做的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdac137334ba.png">
+<meta property="article:published_time" content="2016-11-05T12:20:31.000Z">
+<meta property="article:modified_time" content="2019-01-12T14:17:18.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Xcode">
+<meta property="article:tag" content="Objective-C">
+<meta property="article:tag" content="Unix">
+<meta property="article:tag" content="OS X">
+<meta property="article:tag" content="Dictionary">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdac137334ba.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter13-Dictionary-Services/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter13-Dictionary-Services/","path":"2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter13-Dictionary-Services/","title":"Dictionary Services"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Dictionary Services | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Dictionary-Services"><span class="nav-number">2.</span> <span class="nav-text">0x01 Dictionary Services</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-Unix"><span class="nav-number">3.</span> <span class="nav-text">0x02 Unix</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-OS-X"><span class="nav-number">4.</span> <span class="nav-text">0x03 OS X</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0301-Gettting-Definition-of-Word"><span class="nav-number">4.1.</span> <span class="nav-text">0x0301 Gettting Definition of Word</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0302-Setting-Active-Dictionaries"><span class="nav-number">4.2.</span> <span class="nav-text">0x0302 Setting Active Dictionaries</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0303-Private-APIs"><span class="nav-number">4.3.</span> <span class="nav-text">0x0303 Private APIs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0304-Getting-Available-Dictionaries"><span class="nav-number">4.4.</span> <span class="nav-text">0x0304 Getting Available Dictionaries</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0305-Getting-Definition-for-Word"><span class="nav-number">4.5.</span> <span class="nav-text">0x0305 Getting Definition for Word</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-iOS"><span class="nav-number">5.</span> <span class="nav-text">0x04 iOS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-Xcode-Tools"><span class="nav-number">6.</span> <span class="nav-text">0x05 Xcode Tools</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0501-xcode-select"><span class="nav-number">6.1.</span> <span class="nav-text">0x0501 xcode-select</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter13-Dictionary-Services/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Dictionary Services | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dictionary Services
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-11-05 20:20:31" itemprop="dateCreated datePublished" datetime="2016-11-05T20:20:31+08:00">2016-11-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 22:17:18" itemprop="dateModified" datetime="2019-01-12T22:17:18+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter13-Dictionary-Services/" class="post-meta-item leancloud_visitors" data-flag-title="Dictionary Services" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://i.loli.net/2018/11/01/5bdac137334ba.png"></p>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>这篇文章是自己在学习 <a target="_blank" rel="noopener" href="https://gum.co/cfhipsterref">CFHipsterRef</a> Chapter 13 Dictionary Services 时做的笔记。</p>
+<span id="more"></span>
+
+<h1 id="0x01-Dictionary-Services"><a href="#0x01-Dictionary-Services" class="headerlink" title="0x01 Dictionary Services"></a>0x01 Dictionary Services</h1><p>虽然互联网广泛篡夺了它们“参考”状态，字典和词汇表在幕后扮演了重要的角色。大量的功能依赖于这些信息，从拼写检查，语法检查和自动更正到自动摘要和语义分析。</p>
+<p>所以，作为参考，这里看看计算机在 Unix，OS X 和 iOS 中通过单词给世界带来意义的方式和方法。</p>
+<h1 id="0x02-Unix"><a href="#0x02-Unix" class="headerlink" title="0x02 Unix"></a>0x02 Unix</h1><p>几乎所有的 Unix 发行版都包括一些小的新行分隔（newline-delimited）的单词列表。在 OS X 上，这些可以在 <code>/usr/share/dict</code> 中找到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /usr/share/dict</span><br><span class="line">    README</span><br><span class="line">    connectives</span><br><span class="line">    propernames</span><br><span class="line">    web2</span><br><span class="line">    web2a</span><br><span class="line">    words@ -&gt; web2</span><br></pre></td></tr></table></figure>
+
+<p>符号链接 <code>words</code> 是 <code>web2</code> 单词列表，虽然不是很详尽，但仍然是一个相当大的语料库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">wc</span> /usr/share/dict/words</span><br><span class="line">    235886   235886 2493109</span><br></pre></td></tr></table></figure>
+
+<p>这里用 <code>head</code> 浏览一些有趣的东西。很少如此显而易见的是这些单词都是以 “a” 开头的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">head</span> /usr/share/dict/words</span><br><span class="line">    A</span><br><span class="line">    a</span><br><span class="line">    aa</span><br><span class="line">    aal</span><br><span class="line">    aalii</span><br><span class="line">    aam</span><br><span class="line">    Aani</span><br><span class="line">    aardvark</span><br><span class="line">    aardwolf</span><br><span class="line">    Aaron</span><br></pre></td></tr></table></figure>
+
+<p>这些巨大的，系统提供的文本文件使其很容易 <code>grep</code> 纵横字谜的线索（crossword puzzle clues），生成记忆密码短语和种子数据库，但从用户角度来看，<code>/usr/share/dict</code> 的单语主义（monolingualism）和缺乏相关的意义使它相当无用。</p>
+<p>OS X 使用自己的系统字典构建。</p>
+<h1 id="0x03-OS-X"><a href="#0x03-OS-X" class="headerlink" title="0x03 OS X"></a>0x03 OS X</h1><p><code>/usr/share/dict</code> 的 OS X 模拟可以在 <code>/Library/Dictionaries</code> 中找到。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> /Library/Dictionaries/</span><br><span class="line">    Apple Dictionary.dictionary/</span><br><span class="line">    Diccionario General de la Lengua Española Vox.dictionary/</span><br><span class="line">    Duden Dictionary Data Set I.dictionary/</span><br><span class="line">    Dutch.dictionary/</span><br><span class="line">    Italian.dictionary/</span><br><span class="line">    Korean - English.dictionary/</span><br><span class="line">    Korean.dictionary/</span><br><span class="line">    Multidictionnaire de la langue francaise.dictionary/</span><br><span class="line">    New Oxford American Dictionary.dictionary/</span><br><span class="line">    Oxford American Writer<span class="string">&#x27;s Thesaurus.dictionary/</span></span><br><span class="line"><span class="string">    Oxford Dictionary of English.dictionary/</span></span><br><span class="line"><span class="string">    Oxford Thesaurus of English.dictionary/</span></span><br><span class="line"><span class="string">    Sanseido Super Daijirin.dictionary/</span></span><br><span class="line"><span class="string">    Sanseido The WISDOM English-Japanese Japanese-English Dictionary.dictionary/</span></span><br><span class="line"><span class="string">    Simplified Chinese - English.dictionary/</span></span><br><span class="line"><span class="string">    The Standard Dictionary of Contemporary Chinese.dictionary/</span></span><br></pre></td></tr></table></figure>
+
+<p>OS X 附有中文，英文，法语，荷兰语，意大利语，日语和韩语的词典，以及一个英语同义词词典和一个 Apple 特定术语的特殊词典。</p>
+<p>更深入一些，仔细看看 <code>.dictionary</code> bundles，看看他们真正是什么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span> <span class="string">&quot;/Library/Dictionaries/New Oxford American Dictionary.dictionary/Contents&quot;</span></span><br><span class="line"></span><br><span class="line">    Body.data</span><br><span class="line">    DefaultStyle.css</span><br><span class="line">    EntryID.data</span><br><span class="line">    EntryID.index</span><br><span class="line">    Images/</span><br><span class="line">    Info.plist</span><br><span class="line">    KeyText.data</span><br><span class="line">    KeyText.index</span><br><span class="line">    Resources/</span><br><span class="line">    _CodeSignature/</span><br><span class="line">    version.plist</span><br></pre></td></tr></table></figure>
+
+<p>一个文件系统解剖展示了一些有趣的实现细节。特别是新牛津美国词典的情况下，内容包括：</p>
+<ul>
+<li><code>KeyText.data</code>，<code>KeyText.index</code> &amp; <code>Content.data</code> 二进制编码</li>
+<li>CSS 样式条目</li>
+<li>1207 张图片，从 A-Frame 到 Zither</li>
+<li>在 US English Diacritical Pronunciation 和 International Phonetic Alphabet (IPA) 之间切换的偏好</li>
+<li>词典内容的清单 &amp; 签名</li>
+</ul>
+<p>通常，专有二进制编码意味着可以合理处理数据的结束，但是幸运的是，Core Service 提供了读取这个信息的 API。</p>
+<h2 id="0x0301-Gettting-Definition-of-Word"><a href="#0x0301-Gettting-Definition-of-Word" class="headerlink" title="0x0301 Gettting Definition of Word"></a>0x0301 Gettting Definition of Word</h2><p>在 OS X 上要获取一个字的定义，可以使用 <code>DCSCopyTextDefinition</code> 函数，在 Core Services 框架中能够找到：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;CoreServices/CoreServices.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NSString</span> *word = <span class="string">@&quot;apple&quot;</span>;</span><br><span class="line"><span class="built_in">NSString</span> *definition =</span><br><span class="line">    (__bridge_transfer <span class="built_in">NSString</span> *)DCSCopyTextDefinition(<span class="literal">NULL</span>,</span><br><span class="line">                                                        (__bridge <span class="built_in">CFStringRef</span>)word,</span><br><span class="line">                                                        <span class="built_in">CFRangeMake</span>(<span class="number">0</span>, [word length]));</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>, difinition);</span><br></pre></td></tr></table></figure>
+
+<p>等等，那些伟大的词典都去哪里了？</p>
+<p>好吧，他们都消失在第一个 <code>NULL</code> 参数中。这里可以期望提供一个 <code>DCSCopyTextDefinition</code> 类型，如函数定义所规定的。然而，没有一个公共的函数去构造或复制这样一个类型，使 <code>NULL</code> 成为唯一一个可用的选项。文档也是清晰明确：</p>
+<p><em>“This parameter is reserved for future use, so pass NULL. Dictionary Services searches in all active dictionaries.”</em></p>
+<p>“Dictionary Services searches in all active dictionaries”，这样？听起来像是一个漏洞！</p>
+<h2 id="0x0302-Setting-Active-Dictionaries"><a href="#0x0302-Setting-Active-Dictionaries" class="headerlink" title="0x0302 Setting Active Dictionaries"></a>0x0302 Setting Active Dictionaries</h2><p>利用漏洞来解决 Apple 平台限制的实践。一个完全易错的获取方法，比如说，同义词词典结果而不是在标准词典中第一个可用的定义：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSUserDefaults</span> *userDefaults = [<span class="built_in">NSUserDefaults</span> standardUserDefaults];</span><br><span class="line"><span class="built_in">NSMutableDictionary</span> *dictionaryPreferences = [[userDefaults persistentDomainForName:<span class="string">@&quot;com.apple.DictionaryServices&quot;</span>] mutableCopy];</span><br><span class="line"><span class="built_in">NSArray</span> *activeDictionaries = [dictionaryPreferences objectForKey:<span class="string">@&quot;DCSActiveDictionaries&quot;</span>];</span><br><span class="line">dictionaryPreferences[<span class="string">@&quot;DCSActiveDictionaries&quot;</span>] = @[<span class="string">@&quot;/Library/Dictionaries/Oxford American Writer&#x27;s Thesaurus.dictionary&quot;</span>];</span><br><span class="line">[userDefaults setPersistentDomain:dictionaryPreferences forName:<span class="string">@&quot;com.apple.DictionaryServices&quot;</span>];</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSString</span> *word = <span class="string">@&quot;apple&quot;</span>;</span><br><span class="line">    <span class="built_in">NSString</span> *definition = (__bridge_transfer <span class="built_in">NSString</span> *)DCSCopyTextDefinition(<span class="literal">NULL</span>, (__bridge <span class="built_in">CFStringRef</span>)word, <span class="built_in">CFRangeMake</span>(<span class="number">0</span>, [word length]));</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>, definition);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dictionaryPreferences[<span class="string">@&quot;DCSActiveDictionaries&quot;</span>] = activeDictionaries;</span><br><span class="line">[userDefaults setPersistentDomain:dictionaryPreferences forName:<span class="string">@&quot;com.apple.DictionaryServices&quot;</span>];</span><br></pre></td></tr></table></figure>
+
+<p>“但是这是 OS X，一个平台，其宿命不能被来自 Cupertino 的贫乏的沙盒尝试（meager sandboxing attempts）所包含！”，你哭了。“难道没有一个更文明的方法吗？，比如说，私有 API？”</p>
+<p>是的，有。</p>
+<h2 id="0x0303-Private-APIs"><a href="#0x0303-Private-APIs" class="headerlink" title="0x0303 Private APIs"></a>0x0303 Private APIs</h2><p>没有公开地暴露，但是仍然可用通过 Core Services 使用一些函数，更接近我们渴望的词典服务（dictionary services）：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="built_in">CFArrayRef</span> DCSCopyAvailableDictionaries();</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSDictionaryGetName(DCSDictionaryRef dictionary);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSDictionaryGetShortName(DCSDictionaryRef dictionary);</span><br><span class="line"><span class="keyword">extern</span> DCSDictionaryRef DCSDictionaryCreate(<span class="built_in">CFURLRef</span> url);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSDictionaryGetName(DCSDictionaryRef dictionary);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFArrayRef</span> DCSDopyRecordsForSearchString(DCSDictionaryRef dictionary, <span class="built_in">CFStringRef</span> string, <span class="type">void</span> * <span class="type">void</span> *);</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFDictionaryRef</span> DCSCopyDefinitionMarkup(DCSDictionaryRef dictionary, <span class="built_in">CFStringRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordCopyData(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordCopyDataURL(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordGetAnchor(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordGetAssociatedObj(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordGetHeadword(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordGetRawHeadword(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordGetString(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">CFStringRef</span> DCSRecordGetTitle(<span class="built_in">CFTypeRef</span> record);</span><br><span class="line"><span class="keyword">extern</span> DCSDictionaryRef DCSRecordGetSubDictionary(<span class="built_in">CFTypeRef</span> record);</span><br></pre></td></tr></table></figure>
+
+<p>这些函数并没有在文档中记录，所以来看看它们是怎么使用的。</p>
+<h2 id="0x0304-Getting-Available-Dictionaries"><a href="#0x0304-Getting-Available-Dictionaries" class="headerlink" title="0x0304 Getting Available Dictionaries"></a>0x0304 Getting Available Dictionaries</h2><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSMapTable</span> *availableDictionariesKeyedByName =</span><br><span class="line">    [<span class="built_in">NSMapTable</span> mapTableWithKeyOptions:<span class="built_in">NSPointerFunctionsCopyIn</span></span><br><span class="line">                          valueOptions:<span class="built_in">NSPointerFunctionsObjectPointerPersonality</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="type">id</span> dictionary <span class="keyword">in</span> (__bridge_transfer <span class="built_in">NSArray</span> *)DCSCopyAvailableDictionaries()) &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *name = (__bridge <span class="built_in">NSString</span> *)DCSDictionaryGetName((__bridge DCSDictionaryRef)dictionary);</span><br><span class="line">    [availableDictionariesKeyedByName setObject:dictionary forKey:name];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x0305-Getting-Definition-for-Word"><a href="#0x0305-Getting-Definition-for-Word" class="headerlink" title="0x0305 Getting Definition for Word"></a>0x0305 Getting Definition for Word</h2><p>有了可用的 <code>DCSDictionaryRef</code> 类型示例，我们现在可以看到所有的大惊小怪都是关于 <code>DCSCopyTextDefinition</code> 的第一个参数：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *word = <span class="string">@&quot;apple&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">NSString</span> *name <span class="keyword">in</span> availableDictionariesKeyedByName) &#123;</span><br><span class="line">    <span class="type">id</span> dictionary = [availableDictionariesKeyedByName objectForKey:name];</span><br><span class="line">    <span class="built_in">CFRange</span> termRange = DCSGetTermRangeInString((__bridge DCSDictionaryRef)dictionary,</span><br><span class="line">                                                (__bridge <span class="built_in">CFStringRef</span>)word, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (termRange.location == kCFNotFound) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSString</span> *term = [word substringWithRange:<span class="built_in">NSMakeRange</span>(termRange.location, termRange.length)];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSArray</span> *records =</span><br><span class="line">        (__bridge_transfer <span class="built_in">NSArray</span> *)DCSCopyRecordsForSearchString(</span><br><span class="line">            (__bridge DCSDictionaryRef)dictionary,</span><br><span class="line">            (__bridge <span class="built_in">CFStringRef</span>)term, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (records) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">id</span> record <span class="keyword">in</span> records) &#123;</span><br><span class="line">            <span class="built_in">NSString</span> *headword = (__bridge <span class="built_in">NSString</span> *)DCSRecordGetHeadword((__bridge <span class="built_in">CFTypeRef</span>)record);</span><br><span class="line">            <span class="keyword">if</span> (headword) &#123;</span><br><span class="line">                <span class="built_in">NSString</span> *definition =</span><br><span class="line">                    (__bridge_transfer <span class="built_in">NSString</span> *)DCSCopyTextDefinition(</span><br><span class="line">                        (__bridge DCSDictionaryRef)dictionary,</span><br><span class="line">                        (__bridge <span class="built_in">CFStringRef</span>)headword,</span><br><span class="line">                        <span class="built_in">CFRangeMake</span>(<span class="number">0</span>, [headword length]));</span><br><span class="line">                <span class="built_in">NSLog</span>(<span class="string">@&quot;%@: %@&quot;</span>, name, definition);</span><br><span class="line">                </span><br><span class="line">                <span class="built_in">NSString</span> *HTML =</span><br><span class="line">                    (__bridge_transfer <span class="built_in">NSString</span> *)DCSRecordCopyData(</span><br><span class="line">                        (__bridge DSCDictionaryRef)dictionary,</span><br><span class="line">                        (__bridge <span class="built_in">CFStringRef</span>)headword,</span><br><span class="line">                        <span class="built_in">CFRangeMake</span>(<span class="number">0</span>, [headword length]));</span><br><span class="line">                <span class="built_in">NSLog</span>(<span class="string">@&quot;%@: %@&quot;</span>, name, definition);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从这个实验最让人惊讶的是能够访问原始 HTML 的条目，结合字典捆绑的 CSS，产生 Dictionary.app 中显示的内容。</p>
+<h1 id="0x04-iOS"><a href="#0x04-iOS" class="headerlink" title="0x04 iOS"></a>0x04 iOS</h1><p>iOS 开发显然是一个更按部就班的事情，所以试图对平台进行逆向工程将只是一个学术练习。幸运的是，通过晦涩的 UIKit 类 <code>UIReferenceLibraryViewController</code> 有大量的功能可用（从 iOS 5 开始）。</p>
+<p><code>UIReferenceLibraryViewController</code> 跟 <code>MFMessageComposeViewController</code> 很像，其提供了一个围绕系统功能的最小可配置视图控制器，旨在以模态方式呈现。</p>
+<p>只需用所需的 term 初始化并模态化显示：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIReferenceLibraryViewController</span> *referenceLibraryViewController =</span><br><span class="line">    [[<span class="built_in">UIReferenceLibraryViewController</span> alloc] initWithTerm:<span class="string">@&quot;apple&quot;</span>];</span><br><span class="line">[viewController presentViewController:referenceLibraryViewController animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
+
+<p>这跟在 <code>UITextView</code> 中在高亮文字上点击 “Define” <code>UIMenuItem</code> 的行为很像。</p>
+<p><code>UIReferenceLibraryViewController</code> 也提供了类方法 <code>dictionaryHasDefinitionForTerm:</code>。开发者最好在模态一个字典视图控制器前调用这个方法，不然可能啥都没有显示出来。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">UIReferenceLibraryViewController</span> dictionaryHasDefinitionForTerm:<span class="string">@&quot;apple&quot;</span>];</span><br></pre></td></tr></table></figure>
+
+<p>从 Unix 的词列表到在 OS X 上（也可能是 iOS）演化的 <code>.dictionary</code> 包，文字是对应用程序编程以及数学常量和 “Sosumi” 警告声至关重要的。思考如何将上述 API 集成到自己的 app 中，或创建一种你以前没有想过的 app。Apple 的平台中有大量的语言学技术，所以要利用它们。</p>
+<p>虽然我们都来自不同的背景，有不同的观点，塑造我们的经历；虽然我们做带有各自动机，信念，偏见和意见的事情，使我们彼此分离，但是有一件事情我们是一样的：</p>
+<p>我们都必须使用 Xcode。不管怎样，好的或坏的。</p>
+<p>至于常见的原因，老实说，事情可以更绝望。也有几个明显的例外，Xcode 好像随着每个版本在变得更好。</p>
+<p>但是当然，Xcode 并不真的只是一个应用程序。在 GUI 下是一个应用程序和命令行工具的联合。</p>
+<h1 id="0x05-Xcode-Tools"><a href="#0x05-Xcode-Tools" class="headerlink" title="0x05 Xcode Tools"></a>0x05 Xcode Tools</h1><h2 id="0x0501-xcode-select"><a href="#0x0501-xcode-select" class="headerlink" title="0x0501 xcode-select"></a>0x0501 xcode-select</h2><p>任何人与 Xcode 的旅程始于一个选择。<code>xcode-select</code> 提供这个选择。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+              <a href="/tags/Xcode/" rel="tag"># Xcode</a>
+              <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+              <a href="/tags/Unix/" rel="tag"># Unix</a>
+              <a href="/tags/OS-X/" rel="tag"># OS X</a>
+              <a href="/tags/Dictionary/" rel="tag"># Dictionary</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter12-International-Components-for-Unicode/" rel="prev" title="International Components for Unicode">
+                  <i class="fa fa-chevron-left"></i> International Components for Unicode
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/" rel="next" title="Xcode Toolchain">
+                  Xcode Toolchain <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 16 CocoaPods 时做的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CocoaPods">
+<meta property="og:url" content="https://meilbn.com/2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter16-CocoaPods/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 16 CocoaPods 时做的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdac17673fef.png">
+<meta property="article:published_time" content="2016-11-07T03:16:22.000Z">
+<meta property="article:modified_time" content="2019-01-12T14:18:25.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="Objective-C">
+<meta property="article:tag" content="CocoaPods">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdac17673fef.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter16-CocoaPods/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter16-CocoaPods/","path":"2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter16-CocoaPods/","title":"CocoaPods"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CocoaPods | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Using-CocoaPods"><span class="nav-number">2.</span> <span class="nav-text">0x01 Using CocoaPods</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Installing-CocoaPods"><span class="nav-number">2.1.</span> <span class="nav-text">0x01 Installing CocoaPods</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-Managing-Dependencies"><span class="nav-number">3.</span> <span class="nav-text">0x02 Managing Dependencies</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0201-Podfile"><span class="nav-number">3.1.</span> <span class="nav-text">0x0201 Podfile</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-Trying-Out-a-CocoaPod"><span class="nav-number">4.</span> <span class="nav-text">0x03 Trying Out a CocoaPod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-Creating-a-CocoaPod"><span class="nav-number">5.</span> <span class="nav-text">0x04 Creating a CocoaPod</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0401-Specification"><span class="nav-number">5.1.</span> <span class="nav-text">0x0401 Specification</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-Publishing-a-CocoaPod"><span class="nav-number">6.</span> <span class="nav-text">0x05 Publishing a CocoaPod</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x06-A-Look-Forward"><span class="nav-number">7.</span> <span class="nav-text">0x06 A Look Forward</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter16-CocoaPods/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CocoaPods | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CocoaPods
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-11-07 11:16:22" itemprop="dateCreated datePublished" datetime="2016-11-07T11:16:22+08:00">2016-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 22:18:25" itemprop="dateModified" datetime="2019-01-12T22:18:25+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter16-CocoaPods/" class="post-meta-item leancloud_visitors" data-flag-title="CocoaPods" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://i.loli.net/2018/11/01/5bdac17673fef.png"></p>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>这篇文章是自己在学习 <a target="_blank" rel="noopener" href="https://gum.co/cfhipsterref">CFHipsterRef</a> Chapter 16 CocoaPods 时做的笔记。</p>
+<span id="more"></span>
+
+<h1 id="0x01-Using-CocoaPods"><a href="#0x01-Using-CocoaPods" class="headerlink" title="0x01 Using CocoaPods"></a>0x01 Using CocoaPods</h1><p>作为使用者和一个库的作者，CocoaPods 都是非常容易上手的。安装只需要几分钟的时间。</p>
+<h2 id="0x01-Installing-CocoaPods"><a href="#0x01-Installing-CocoaPods" class="headerlink" title="0x01 Installing CocoaPods"></a>0x01 Installing CocoaPods</h2><p>通过 RubyGems 安装 CocoaPods，RubyGems 是一个标准的 OS X 安装的 Ruby 包管理器，</p>
+<p>打开 Terminal.app 并输入下面命令安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gem install cocoapods</span><br></pre></td></tr></table></figure>
+
+<p>现在你应该就可以在终端中使用 <code>pod</code> 命令了。</p>
+<h1 id="0x02-Managing-Dependencies"><a href="#0x02-Managing-Dependencies" class="headerlink" title="0x02 Managing Dependencies"></a>0x02 Managing Dependencies</h1><p>一个依赖管理器将软件需求列表解析为特定标签列表，以下载并集成到项目中。</p>
+<h2 id="0x0201-Podfile"><a href="#0x0201-Podfile" class="headerlink" title="0x0201 Podfile"></a>0x0201 Podfile</h2><p><code>Podfile</code> 是列出项目的依赖项的地方。它相当于使用 Bundler 或 <code>package</code> 的 Ruby 项目的 <code>Gemfile</code>。<code>json</code> 用于使用 npm 的 JavaScript 项目。</p>
+<p>要生成一个 Podfile，<code>cd</code> 到你的 <code>.xcodeproj</code> 文件所在的目录然后输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod init</span><br></pre></td></tr></table></figure>
+
+<p>Podfile</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">platform :ios, &#x27;7.0&#x27;</span><br><span class="line"></span><br><span class="line">target &quot;AppName&quot; do</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>依赖项可以有不同级别的规范。对于大多数的库，将它们包括进你的项目中绑定到一个次版本或补丁版本是最安全和最简单的方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;X&#x27;, &#x27;~&gt; 1.1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>要包括一个为包括到公共 specs 数据库的库，可以使用 Git，Mercurial 或 SVN 仓库，可以指定一个 <code>commit</code>，<code>branch</code> 或 <code>tag</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;Y&#x27;, :git =&gt; &#x27;https://github.com/NSHipster/Y.git&#x27;, :commit =&gt; &#x27;b4dc0ffee&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>一旦指定了所有的依赖项，它们就使用以下命令安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod install</span><br></pre></td></tr></table></figure>
+
+<p>当运行这个命令的时候，CocoaPods 将会递归分析每个项目的依赖关系，将它们解析为依赖图，并序列化为 <code>Podfile.lock</code> 文件。</p>
+<p>CocoaPods 会创建一个新的 Xcode 项目，为每个依赖项创建静态库 target，然后将它们链接一起到一个 <code>libPods.a</code> target 中。这个静态库变成你原始项目的一个依赖项。一个 <code>xcworkspace</code> 文件被创建并且应该从此时开始使用。这允许原始的 <code>xcodeproj</code> 文件保持不变。</p>
+<p>随后调用的 <code>pod install</code> 会根据锁定的依赖图添加新的 pods 或 删除旧的 pods。要更新一个项目单独的依赖项到最新的版本，可以使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod update</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x03-Trying-Out-a-CocoaPod"><a href="#0x03-Trying-Out-a-CocoaPod" class="headerlink" title="0x03 Trying Out a CocoaPod"></a>0x03 Trying Out a CocoaPod</h1><p>一个很棒但是鲜为人知的 CocoaPods 的功能是 <code>try</code> 命令，其允许你在添加一个库到你的项目之前测试这个库。</p>
+<p>使用在公共 specs 数据库中的一个项目的名称调用 <code>$ pod try</code> 打开库的任何示例项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod try Ono</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x04-Creating-a-CocoaPod"><a href="#0x04-Creating-a-CocoaPod" class="headerlink" title="0x04 Creating a CocoaPod"></a>0x04 Creating a CocoaPod</h1><p>作为 Objective-C 软件分发的事实标准，CocoaPods 是开源项目的一个要求，目的是被其他人使用。</p>
+<p>花几分钟时间创建一个 <code>.podspec</code> 文件至少可以节省每个用户尝试将其集成到他们自己的项目中的时间。</p>
+<p>记住：提高软件生态系统中的贡献标准降低了参与的标准。</p>
+<h2 id="0x0401-Specification"><a href="#0x0401-Specification" class="headerlink" title="0x0401 Specification"></a>0x0401 Specification</h2><p><code>.podspec</code> 文件是 CocoaPods 依赖的原子单位。它指定了一个库的名称，版本，license 和源文件，以及其他元数据。</p>
+<p>NSHipsterKit.podspec</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Pod::Spec.new do |s|</span><br><span class="line">  s.name     = &#x27;NSHipsterKit&#x27;</span><br><span class="line">  s.version  = &#x27;1.0.0&#x27;</span><br><span class="line">  s.license  = &#x27;MIT&#x27;</span><br><span class="line">  s.summary  = &quot;A pretty obscure library. You&#x27;ve probably never heard of it.&quot;</span><br><span class="line">  s.homepage = &#x27;http://nshipster.com&#x27;</span><br><span class="line">  s.authors  = &#123; &#x27;Mattt Thompson&#x27; =&gt;</span><br><span class="line">                &#x27;mattt@nshipster.com&#x27; &#125;</span><br><span class="line">  s.social_media_url = &quot;https://twitter.com/mattt&quot;</span><br><span class="line">  s.source = &#123; :git =&gt; &#x27;https://github.com/nshipster/NSHipsterKit.git&#x27;, :tag =&gt; &#x27;1.0.0&#x27; &#125;</span><br><span class="line">  s.source_files = &#x27;NSHipsterKit&#x27;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>一旦发布到公共 specs 数据库，任何人都可以将其添加到自己的项目中：</p>
+<p>Podfile</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;NSHipsterKit&#x27;, &#x27;~&gt; 1.0&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><code>.podspec</code> 文件也可以用于组织内置或私有依赖项：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;Z&#x27;, :path =&gt; &#x27;path/to/directory/with/podspec&#x27;</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x05-Publishing-a-CocoaPod"><a href="#0x05-Publishing-a-CocoaPod" class="headerlink" title="0x05 Publishing a CocoaPod"></a>0x05 Publishing a CocoaPod</h1><p>虽然它开始工作地非常出色，但在 GitHub 上使用 Pull Requests 管理新的 pods 的过程变得很琐碎，对于库的作者和 spec 组织者来说都是。有时 podspecs 会不传递 <code>$ pod lint</code> 而提交，导致 specs repo 构建失败。其他时候，来自原始库作者意外的人的劣质提交会意外地打乱事情。</p>
+<p>CocoaPods Trunk 服务，在 CocoaPods 0.33 中引入，解决了很多问题，使这个过程的对所有参与者都很好。作为一个集中式服务，它还具有能够获取库使用分析以及其他指标的好处。</p>
+<p>要开始使用，你必须先使用 Trunk 服务注册你的机器。这非常简单，只需要指定你的 email 地址（那个你用来提交库代码的）以及你的名称。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod trunk register mattt@nshipster.com <span class="string">&quot;Mattt Thompson&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，将代码发布到 CocoaPods 只需要一个命令。同一个命令适用于创建新库或向现有库中添加新版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod trunk push NAME.podspec</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x06-A-Look-Forward"><a href="#0x06-A-Look-Forward" class="headerlink" title="0x06 A Look Forward"></a>0x06 A Look Forward</h1><p>CocoaPods 例证了社区基础设施的复合效应。在短短几年内，Objective-C 社区已经变成了我们可以成为一部分而感到自豪的东西。</p>
+<p>CocoaPods 对于 Objective-C 是一个好东西。只会越来越好。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+              <a href="/tags/CocoaPods/" rel="tag"># CocoaPods</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/" rel="prev" title="Third Party Tools">
+                  <i class="fa fa-chevron-left"></i> Third Party Tools
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Table-of-Contents/" rel="next" title="CFHipsterRef 学习笔记目录">
+                  CFHipsterRef 学习笔记目录 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

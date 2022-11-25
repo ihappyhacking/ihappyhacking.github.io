@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言Reveal 的使用（静态库链接）。 首先，这里是讲用 Xcode 和 Reveal 来查看自己的 App 的视图，如果你是想看第三方的 App 的界面，那么就不需要看下去了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Integrating Reveal：Static Linking">
+<meta property="og:url" content="https://meilbn.com/2015/08/01/integrating-reveal-static-linking/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言Reveal 的使用（静态库链接）。 首先，这里是讲用 Xcode 和 Reveal 来查看自己的 App 的视图，如果你是想看第三方的 App 的界面，那么就不需要看下去了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabd4a9ae0c.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabd584cf2d.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabd676498a.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabd761d97c.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabd86253a4.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabd99bd99c.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabda8970a5.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabdb93e2f0.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabdcc4e4b2.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabddb6f57b.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabdeb7655e.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdabdfa84ed7.png">
+<meta property="article:published_time" content="2015-08-01T03:35:07.000Z">
+<meta property="article:modified_time" content="2019-01-12T09:27:57.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="Reveal">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdabd4a9ae0c.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2015/08/01/integrating-reveal-static-linking/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2015/08/01/integrating-reveal-static-linking/","path":"2015/08/01/integrating-reveal-static-linking/","title":"Integrating Reveal：Static Linking"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Integrating Reveal：Static Linking | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Xcode-%E6%9F%A5%E7%9C%8B-App-%E7%9A%84%E8%A7%86%E5%9B%BE"><span class="nav-number">2.</span> <span class="nav-text">0x01 Xcode 查看 App 的视图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-Reveal-%E7%99%BB%E5%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">0x02 Reveal 登场</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-Reveal-%E6%9F%A5%E7%9C%8B-App-%E8%A7%86%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">0x03 Reveal 查看 App 视图</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2015/08/01/integrating-reveal-static-linking/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Integrating Reveal：Static Linking | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Integrating Reveal：Static Linking
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2015-08-01 11:35:07" itemprop="dateCreated datePublished" datetime="2015-08-01T11:35:07+08:00">2015-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 17:27:57" itemprop="dateModified" datetime="2019-01-12T17:27:57+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开发工具</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2015/08/01/integrating-reveal-static-linking/" class="post-meta-item leancloud_visitors" data-flag-title="Integrating Reveal：Static Linking" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>Reveal 的使用（静态库链接）。</p>
+<p>首先，这里是讲用 Xcode 和 Reveal 来查看自己的 App 的视图，如果你是想看第三方的 App 的界面，那么就不需要看下去了。</p>
+<span id="more"></span>
+
+<h1 id="0x01-Xcode-查看-App-的视图"><a href="#0x01-Xcode-查看-App-的视图" class="headerlink" title="0x01 Xcode 查看 App 的视图"></a>0x01 Xcode 查看 App 的视图</h1><p>自从买了 Reveal，用着真的是非常爽呢，加上 iPhone 越狱了，那真是爽上加爽啊，高潮不断，哈哈。⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</p>
+<p>咳~</p>
+<p>在日常的开发中，经常会有一些界面上的设计是平常用的 App 上看到过的，没办法，产品经理或者美工抄人家嘛，关键是抄的还不好，算了，这里不吐槽这个了。如果你有自己的想法，可以实现这个效果，那还是不错的，但是有时候，那个效果想不出来要怎么实现比较好，想看看别的 App 是怎么实现，怎么设计界面的，这个时候，Reveal 就派上了用场，</p>
+<p>不过这里先不说这个情况，先说自己开发的 App，有时候一个界面的问题总是非常难搞，特别是手写控件的时候，不用 xib 或者 storyboard，那个该死的按钮死哪去了？那个图片怎么显示起来这样子的？如果你 Reveal 的试用到期了，或者没有使用 Reveal，没关系，还可以用 Xcode 来查看视图结构，没错，Xcode 自带有这个功能，不过是暂停了 App 的运行，进入了 Debug 模式，步骤如下：</p>
+<ol>
+<li>先运行你的 App 到手机或者模拟器上</li>
+<li>然后点击 Xcode 上的 <code>Debug View Hierarchy</code> 按钮：<img src="https://i.loli.net/2018/11/01/5bdabd4a9ae0c.png"></li>
+<li>然后 Xcode 就会显示一个你当前 App 的视图层次的窗口，我这边是这样的：<img src="https://i.loli.net/2018/11/01/5bdabd584cf2d.png"></li>
+<li>选中一个控件之后，可以查看该控件的一些信息：<img src="https://i.loli.net/2018/11/01/5bdabd676498a.png"></li>
+<li>可以转动视图来查看各个方向上的层次结构：<img src="https://i.loli.net/2018/11/01/5bdabd761d97c.png"></li>
+</ol>
+<p>对于自己的 App，如果你要求不是那么高的话，Xcode 也是差不多够用了，当然，这是在没有和 Reveal 的对比下，相信我，看完了 Reveal，你绝逼会想买的。</p>
+<h1 id="0x02-Reveal-登场"><a href="#0x02-Reveal-登场" class="headerlink" title="0x02 Reveal 登场"></a>0x02 Reveal 登场</h1><p>现在该是 Reveal 的 Show Time 了！你也可以查看相关的<a target="_blank" rel="noopener" href="http://support.revealapp.com/kb/getting-started/integrating-reveal-static-linking">官方教程</a>，要想用 Reveal 来查看自己的 App 的视图，先要配置一下项目，也很简单，只要如下几步：</p>
+<ol>
+<li>你要先安装了 Reveal</li>
+<li>打开 Reveal，点击菜单栏上的 <em><strong>Help -&gt; Show Reveal Library in Finder</strong></em> ：<img src="https://i.loli.net/2018/11/01/5bdabd86253a4.png"></li>
+<li>点击了之后，Finder 会打开一个窗口，将 <code>Reveal.framework</code> 拖入你的 Xcode 项目中，记得勾选：<img src="https://i.loli.net/2018/11/01/5bdabd99bd99c.png"></li>
+<li>然后点击上方的 <em>Project -&gt; Targets -&gt; Build Phases -&gt; Link Binary With Libraries</em> ，将 Reveal.framework 移除（如果有的话）：<img src="https://i.loli.net/2018/11/01/5bdabda8970a5.png"></li>
+<li>点击 <em>Build Settings</em> ，搜索 <code>Other Linker Flags</code>，添加下面这行代码：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-ObjC -lz -framework Reveal</span><br></pre></td></tr></table></figure>
+
+<p>如图所示：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdabdb93e2f0.png"></p>
+<p>如果是这样，就算是配置完成了：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdabdcc4e4b2.png"></p>
+<h1 id="0x03-Reveal-查看-App-视图"><a href="#0x03-Reveal-查看-App-视图" class="headerlink" title="0x03 Reveal 查看 App 视图"></a>0x03 Reveal 查看 App 视图</h1><p>配置完了当然就可以用 Reveal 查看自己的 App 的视图了，直接运行，然后打开 Reveal，点击左上角的 <code>No Connection</code> 来选择要查看的 App：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdabddb6f57b.png"></p>
+<p>然后就可以开始玩了，比如这个 Demo 在 Reveal 中展示起来就是这样的：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdabdeb7655e.png"></p>
+<p>左侧是视图层次结构，右侧是各种参数信息，非常多，而且界面也是支持旋转的，2D、3D 模式。</p>
+<p>这个 Demo 非常简单，看不出来有什么很屌的样子，那我就上一张自己正在开发的一个 App 的截图：</p>
+<p><img src="https://i.loli.net/2018/11/01/5bdabdfa84ed7.png"></p>
+<p>这样足够明显了吧？知道 Reveal 的好处了吧。</p>
+<p>关键是 Reveal 不止可以查看自己的 App，还可以查看第三方的 App，这个对我的吸引才是最大的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Reveal/" rel="tag"># Reveal</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/07/23/use-charles-capture-package-in-mac/" rel="prev" title="在 Mac 上使用 Charles 抓包">
+                  <i class="fa fa-chevron-left"></i> 在 Mac 上使用 Charles 抓包
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/08/08/uicollectionviews-now-have-easy-reordering/" rel="next" title="UICollectionViews Now Have Easy Reordering">
+                  UICollectionViews Now Have Easy Reordering <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

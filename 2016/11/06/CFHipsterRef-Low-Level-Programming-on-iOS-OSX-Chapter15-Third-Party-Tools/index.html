@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 15 Third Party Tools 时做的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Third Party Tools">
+<meta property="og:url" content="https://meilbn.com/2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 15 Third Party Tools 时做的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdac167a794e.png">
+<meta property="article:published_time" content="2016-11-06T14:21:40.000Z">
+<meta property="article:modified_time" content="2019-01-12T14:18:04.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="Objective-C">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdac167a794e.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/","path":"2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/","title":"Third Party Tools"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Third Party Tools | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-appledoc"><span class="nav-number">2.</span> <span class="nav-text">0x01 appledoc</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-xctool"><span class="nav-number">3.</span> <span class="nav-text">0x02 xctool</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-OCLint"><span class="nav-number">4.</span> <span class="nav-text">0x03 OCLint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-xcpretty"><span class="nav-number">5.</span> <span class="nav-text">0x04 xcpretty</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-Nomad"><span class="nav-number">6.</span> <span class="nav-text">0x05 Nomad</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x06-Cupertino"><span class="nav-number">7.</span> <span class="nav-text">0x06 Cupertino</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x07-Shenzhen"><span class="nav-number">8.</span> <span class="nav-text">0x07 Shenzhen</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x08-Houston"><span class="nav-number">9.</span> <span class="nav-text">0x08 Houston</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x09-Venice"><span class="nav-number">10.</span> <span class="nav-text">0x09 Venice</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0A-Dubai"><span class="nav-number">11.</span> <span class="nav-text">0x0A Dubai</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Third Party Tools | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Third Party Tools
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-11-06 22:21:40" itemprop="dateCreated datePublished" datetime="2016-11-06T22:21:40+08:00">2016-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 22:18:04" itemprop="dateModified" datetime="2019-01-12T22:18:04+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2016/11/06/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter15-Third-Party-Tools/" class="post-meta-item leancloud_visitors" data-flag-title="Third Party Tools" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://i.loli.net/2018/11/01/5bdac167a794e.png"></p>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>这篇文章是自己在学习 <a target="_blank" rel="noopener" href="https://gum.co/cfhipsterref">CFHipsterRef</a> Chapter 15 Third Party Tools 时做的笔记。</p>
+<span id="more"></span>
+
+<h1 id="0x01-appledoc"><a href="#0x01-appledoc" class="headerlink" title="0x01 appledoc"></a>0x01 appledoc</h1><p>Cocoa 开发者中有一句谚语，Objective-C 的冗长有助于自文档化（self-documenting）代码。在 <code>longMethodNamesWithNamedParameters:</code> 和这些参数的显式类型之间，Objective-C 方法不会留下太多的想象。</p>
+<p>但是即使是自文档化代码可以通过文档来改进，只需少量的工作就能对他人产生显著的好处。</p>
+<p>在 Objective-C 中，选择的文档工具是 <a target="_blank" rel="noopener" href="http://gentlebytes.com/appledoc/"><code>appledoc</code></a>。<code>appledoc</code> 能够从 <code>.h</code> 文件中生成 HTML 和 Xcode 兼容的 <code>.docset</code> 文档，看起来跟 Apple 的官方文档几乎一样。</p>
+<p>Objective-C 文档由任何 <code>@interface</code> 或 <code>@protocol</code>之前的 &#x2F;** *&#x2F; 注释块（注意额外的初始星号）以及任何方法或 <code>@property</code> 声明所指定。文档可能还包含系统字段的标签，如参数或返回值：</p>
+<ul>
+<li>@param [param] [Description]：描述了应该传递什么值或此参数</li>
+<li>@return [Description]：描述了一个方法的返回值</li>
+<li>@see [selector]：提供“参见”相关项目的参考</li>
+<li>@discussion [Discussion]：提供额外的背景情况</li>
+<li>@warning [description]：调出异常或潜在的危险的行为</li>
+</ul>
+<p><code>appledoc</code> 可以通过遵循项目页面上提供的最新的安装说明或使用 <a target="_blank" rel="noopener" href="http://brew.sh/">Homebrew</a> 安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install appledoc</span><br></pre></td></tr></table></figure>
+
+<p>要生成文档，可以在一个 Xcode 项目的根目录中执行 <code>appledoc</code>命令，传递元数据比如项目和公司名称：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ appledoc --project-name CFHipsterRef \</span><br><span class="line">           --project-company <span class="string">&quot;NSHipster&quot;</span> \</span><br><span class="line">           --company-id com.nshipster \</span><br><span class="line">           --output ~/Documents \</span><br><span class="line">           .</span><br></pre></td></tr></table></figure>
+
+<p>这会从目标目录中找到的头文件中生成并安装一个 Xcode <code>.docset</code> 文件。</p>
+<p>额外的配置选项，包括 HTML 输出，可以通过传递 <code>--help</code> 找到：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ appledoc --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="0x02-xctool"><a href="#0x02-xctool" class="headerlink" title="0x02 xctool"></a>0x02 xctool</h1><p><code>xctool</code> 是 <code>xcodebuild</code> 的替代，<code>xcodebuild</code> 是 Xcode.app 下的工具。</p>
+<p><code>xctool</code> 的优美不只是表面上的，构建进度也可以格式化报告，可以由其他工具读取：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xctool -reporter plain:output.txt build</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>pretty：（ <em>默认</em> ）一个基于文本的报告器（reporter），其使用 ANSI 颜色和 unicode 符号来美化输出。</li>
+<li>plain：如 <code>pretty</code>，但是没有带颜色或 Unicode。</li>
+<li>phabricator：输出一个 JSON 数据的构建&#x2F;测试结果，可以输入到 Phabricator 代码 review 工具中。</li>
+<li>junit：生成具有测试结果的 JUnit &#x2F; xUnit 兼容的 XML 文件。</li>
+<li>json-stream：一个构建&#x2F;测试流作为 JSON 字典，一行（示例输出）。</li>
+<li>json-compilation-database：输出构建事件的 JSON 编译数据库，其可以通过基于 Clang Tooling 的工具使用，例如 OCLint。</li>
+</ul>
+<p>对 <code>xcodebuild</code> 的另一个改进是 <code>xctool</code>  会以 Xcode.app 相同的方式在项目中运行应用程序测试。</p>
+<p>仅仅因为这个原因，xctool 对 Objective-C 社区中持续集成测试的新兴学科具有重大含义。</p>
+<p>要安装 <code>xctool</code>，运行下面命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install xctool</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x03-OCLint"><a href="#0x03-OCLint" class="headerlink" title="0x03 OCLint"></a>0x03 OCLint</h1><p>OCLint 是一个静态代码分析器，用于检查 C 代码是否存在常见的问题源，想空的 <code>if/else/try/catch/finally</code> 语句，未使用的局部变量和参数，具有高 NCSS（非注释源语句，Non Commenting Source Statements）复杂代码，冗余代码和其他不良做法。</p>
+<p>安装 OCLint 最佳的方式是使用 Homebrew <a target="_blank" rel="noopener" href="http://caskroom.io/">Cask</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew cask install oclint</span><br></pre></td></tr></table></figure>
+
+<p>还记得 xctool 的 <code>json-compilation-database</code> 报告器选项吗？与 <code>oclint-json-compilation-database</code> 一起使用来启动 OCLint：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ xctool -workspace NSHipster.xcworkspace \</span><br><span class="line">         -scheme <span class="string">&quot;NSHipster&quot;</span> \</span><br><span class="line">         -reporter json-compilation-database \</span><br><span class="line">         build &gt; compile_commands.json</span><br><span class="line"></span><br><span class="line">$ oclint-json-compilation-database</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x04-xcpretty"><a href="#0x04-xcpretty" class="headerlink" title="0x04 xcpretty"></a>0x04 xcpretty</h1><p><code>xcpretty</code> 类似于 <code>xctool</code>，它改进了 <code>xcodebuild</code> 构建输出，但不是尝试替换 <code>xcodebuild</code>，而是扩展并改进它。</p>
+<p>事实上，<code>xcpretty</code> 通过获取 <code>xcodebuild</code> 的管道输出，而不是直接调用来例证 Unix 可组合性的哲学：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ xcodebuild [flags] | xcpretty -c</span><br></pre></td></tr></table></figure>
+
+<p>这种方法的一个主要好处是它真的很快 —— 事实上，在某些情况下，<code>xcpretty</code> 实际上比直接调用 <code>xcodebuild</code> 还要快一点，因为它节省了打印到控制台的时间。</p>
+<p>与 <code>xctool</code> 另一个共性是报告器功能，其特点是格式化输出为 jUnit 风格的 XML，HTML 或 上述 OCTool 兼容的 json-compilation-database 格式。</p>
+<p><code>xcpretty</code> 可以使用 <a target="_blank" rel="noopener" href="http://rubygems.org/">RubyGems</a> 安装，其在 OS X 中已经默认安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install xcpretty</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x05-Nomad"><a href="#0x05-Nomad" class="headerlink" title="0x05 Nomad"></a>0x05 Nomad</h1><p>Nomad 是用于 iOS 和 OS X 开发的世界级命令行工具的集合。它自动化常见的管理任务，以便于开发者可以专注于构建软件。</p>
+<p>每个工具都可以独立地安装，或者用一条命令一起安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gem install nomad-cli</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x06-Cupertino"><a href="#0x06-Cupertino" class="headerlink" title="0x06 Cupertino"></a>0x06 Cupertino</h1><p>应用程序 provisioning 的过程被所有 Apple 开发者普遍厌恶。</p>
+<p>除了整个过程是一个噩梦的开始到结束，许多操作需要通过 Web 界面进行交互。这不仅需要大量额外的点击，而且使其很难自动化。</p>
+<p>Cupertino 提供了一个 CLI 用来管理设备，provisioning profiles，app IDs 和 证书（certificates）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ ios devices:list</span><br><span class="line"></span><br><span class="line">+------------------------------+---------------------------------------+</span><br><span class="line">|      Listing 2 devices. You can register 98 additional devices.      |</span><br><span class="line">+---------------------------+------------------------------------------+</span><br><span class="line">| Device Name               | Device Identifier                        |</span><br><span class="line">+---------------------------+------------------------------------------+</span><br><span class="line">| Johnny Appleseed iPad     | 0123456789012345678901234567890123abcdef |</span><br><span class="line">| Johnny Appleseed iPhone   | abcdef0123456789012345678901234567890123 |</span><br><span class="line">+---------------------------+------------------------------------------+</span><br><span class="line"></span><br><span class="line">$ ios devices:add <span class="string">&quot;iPad 1&quot;</span>=abc123</span><br><span class="line">$ ios devices:add <span class="string">&quot;iPad 2&quot;</span>=def456 <span class="string">&quot;iPad 3&quot;</span>=ghi789 ...</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x07-Shenzhen"><a href="#0x07-Shenzhen" class="headerlink" title="0x07 Shenzhen"></a>0x07 Shenzhen</h1><p>有一件事 web 开发者相对于 iOS 是可以在几秒钟之内连续部署代码，与为 Cupertino 的批准（有时候拒绝！）一个更新而等待几天截然不同。</p>
+<p>幸运的是，一个家庭手工业随着开发和企业分发而兴起。第三方像 HockeyApp，DeployGate 和 TestFlight 提供开发者一个更简单的方式去注册测试用户和发送最新的 QA 版本。</p>
+<p>Shenzhen 是一个进一步自动化此过程的工具，通过构建 <code>.ipa</code> 文件然后分发到一个 FTP&#x2F;SFTP 服务器，S3 bucket 或任何上述第三方服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /path/to/iOS Project/</span><br><span class="line">$ ipa build</span><br><span class="line">$ ipa distribute:sftp --host HOST -u USER -p PASSWORD -P FTP_PATH</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x08-Houston"><a href="#0x08-Houston" class="headerlink" title="0x08 Houston"></a>0x08 Houston</h1><p>Houston 是一个用于发送 Apple Push Notifications 的简单工具。传递凭据，构造消息，并将其发送到设备。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ apn push <span class="string">&quot;&lt;token&gt;&quot;</span> \</span><br><span class="line">    -c /path/to/apple_push_notification.pem \</span><br><span class="line">    -m <span class="string">&quot;Hello from the command line!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>此工具特别适合用于测试远程通知 —— 特别在一个新的 app 中实现功能。</p>
+<h1 id="0x09-Venice"><a href="#0x09-Venice" class="headerlink" title="0x09 Venice"></a>0x09 Venice</h1><p>应用内购买（In-app Purchase）已经，或多或少，成为 app 开发者最有利的商业模式。</p>
+<p>Venice 是一个用于验证 Apple 应用内购买收据的 CLI，并且用收据数据检索相关联的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ iap verify /path/to/receipt</span><br><span class="line"></span><br><span class="line">+-----------------------------+-------------------------------+</span><br><span class="line">|                           Receipt                           |</span><br><span class="line">+-----------------------------+-------------------------------+</span><br><span class="line">| app_item_id                 |                               |</span><br><span class="line">| bid                         | com.foo.bar                   |</span><br><span class="line">| bvrs                        | 20120427                      |</span><br><span class="line">| original_purchase_date      | Sun, 01 Jan 2013 12:00:00 GMT |</span><br><span class="line">| original_transaction_id     | 1000000000000001              |</span><br><span class="line">| product_id                  | com.example.product           |</span><br><span class="line">| purchase_date               | Sun, 01 Jan 2013 12:00:00 GMT |</span><br><span class="line">| quantity                    | 1                             |</span><br><span class="line">| transaction_id              | 1000000000000001              |</span><br><span class="line">| version_external_identifier |                               |</span><br><span class="line">+-----------------------------+-------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p>就像 Houston，Venice 具有一个客户端库组件，允许它部署在一个 Rails 或 Sinatra 应用程序。验证服务器上的收据允许保留他们自己过去购买的记录，这对于最新的指标和历史分析是有用的。因此，关于 IAP，这是推荐的做法。</p>
+<h1 id="0x0A-Dubai"><a href="#0x0A-Dubai" class="headerlink" title="0x0A Dubai"></a>0x0A Dubai</h1><p>Passbook 管理登机牌，电影票，零售优惠券和会员卡。使用 PassKit API，开发者可以注册 web services 以自动更新通信证上的内容，比如登机牌上的登机口更改或向会员卡添加积分。</p>
+<p>Dubai 可以很容易地从脚本或命令行生成 <code>.pkpass</code> 文件，允许快速迭代你的 passes 的设计和内容，或生成一次性的动态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pk generate Example.pass -T boarding-pass</span><br></pre></td></tr></table></figure>
+
+<p>一旦一个 pass 生成，它可以用 Dubai 通过 HTTP 开启一个本地服务，允许 passes 在 iOS 模拟器上动态地预览：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ pk serve Example.pass -c /path/to/certificate.p12</span><br><span class="line">$ open http://localhost:4567/pass.pkpass</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter14-Xcode-Toolchain/" rel="prev" title="Xcode Toolchain">
+                  <i class="fa fa-chevron-left"></i> Xcode Toolchain
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/07/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter16-CocoaPods/" rel="next" title="CocoaPods">
+                  CocoaPods <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

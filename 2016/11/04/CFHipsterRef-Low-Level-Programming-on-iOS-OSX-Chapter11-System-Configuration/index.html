@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 11 System Configuration 时做的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="System Configuration">
+<meta property="og:url" content="https://meilbn.com/2016/11/04/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter11-System-Configuration/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 11 System Configuration 时做的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdac115a9f86.png">
+<meta property="article:published_time" content="2016-11-04T06:33:51.000Z">
+<meta property="article:modified_time" content="2019-01-12T09:55:15.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="Objective-C">
+<meta property="article:tag" content="Reachability">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdac115a9f86.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2016/11/04/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter11-System-Configuration/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2016/11/04/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter11-System-Configuration/","path":"2016/11/04/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter11-System-Configuration/","title":"System Configuration"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>System Configuration | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Sysem-Configuration"><span class="nav-number">2.</span> <span class="nav-text">0x01 Sysem Configuration</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-Reachability"><span class="nav-number">3.</span> <span class="nav-text">0x02 Reachability</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0201-Determining-Network-Reachability-Synchronously"><span class="nav-number">3.1.</span> <span class="nav-text">0x0201 Determining Network Reachability Synchronously</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0202-Determining-Network-Reachability-Asynchronously"><span class="nav-number">3.2.</span> <span class="nav-text">0x0202 Determining Network Reachability Asynchronously</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-Network-Configuration-Settings"><span class="nav-number">4.</span> <span class="nav-text">0x03 Network Configuration Settings</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0301-Query"><span class="nav-number">4.1.</span> <span class="nav-text">0x0301 Query</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0302-Monitoring"><span class="nav-number">4.2.</span> <span class="nav-text">0x0302 Monitoring</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2016/11/04/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter11-System-Configuration/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="System Configuration | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          System Configuration
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-11-04 14:33:51" itemprop="dateCreated datePublished" datetime="2016-11-04T14:33:51+08:00">2016-11-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 17:55:15" itemprop="dateModified" datetime="2019-01-12T17:55:15+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2016/11/04/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter11-System-Configuration/" class="post-meta-item leancloud_visitors" data-flag-title="System Configuration" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://i.loli.net/2018/11/01/5bdac115a9f86.png"></p>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>这篇文章是自己在学习 <a target="_blank" rel="noopener" href="https://gum.co/cfhipsterref">CFHipsterRef</a> Chapter 11 System Configuration 时做的笔记。</p>
+<span id="more"></span>
+
+<h1 id="0x01-Sysem-Configuration"><a href="#0x01-Sysem-Configuration" class="headerlink" title="0x01 Sysem Configuration"></a>0x01 Sysem Configuration</h1><p>系统配置（Sysem Configuration）包含用于确定硬件配置和网络状态的 C API。</p>
+<p>大多数开发者对框架的曝光是通过 Apple 的示例代码，简称 “Reachability”。旨在演示使用系统配置调用来确定互联网连接，如今却成为成千上万的应用程序的一部分。因此，表明 Reachability 是其自身成功的一个受害者。而不是记录系统配置 API，它无意地使它们废弃。</p>
+<p>不幸的后果是，大多数开发者对 reachability 是什么，以及如果使用它一知半解。因此，很多那些在其源码中有 <code>Reachability.m</code> 的应用程序可能实际上比根本没有做任何事情的用户体验更糟。</p>
+<h1 id="0x02-Reachability"><a href="#0x02-Reachability" class="headerlink" title="0x02 Reachability"></a>0x02 Reachability</h1><p>“我连接到互联网了吗？” 是一个难以回答的问题。</p>
+<p>从用户的角度来看，应该很容易，对吧？只需要在 Safari 中输入 <code>apple.com</code>，看看是否有东西加载出来。</p>
+<h2 id="0x0201-Determining-Network-Reachability-Synchronously"><a href="#0x0201-Determining-Network-Reachability-Synchronously" class="headerlink" title="0x0201 Determining Network Reachability Synchronously"></a>0x0201 Determining Network Reachability Synchronously</h2><p>与任何网络一样，建立 reachability 不应同步进行。然而，为了建立到更复杂的同步使用，看起来像是这样：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> SystemConfiguration;</span><br><span class="line"></span><br><span class="line"><span class="built_in">SCNetworkReachabilityRef</span> networkReachability = <span class="built_in">SCNetworkReachabilityCreateWithName</span>(kCFAllocatorDefault, [<span class="string">@&quot;www.apple.com&quot;</span> UTF8String]);</span><br><span class="line"><span class="built_in">SCNetworkReachabilityFlags</span> flags = <span class="built_in">SCNetworkReachabilityGetFlags</span>(networkReachability, &amp;flags);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Use flags to determine reachability</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">CFRelease</span>(networkReachability);</span><br></pre></td></tr></table></figure>
+
+<p><code>SCNetworkReachability</code> 是负责确定网络可达性（Reachability）的数据类型。它可以通过传递主机名（host name）（如上面示例）或一个 <code>sockaddr</code> 地址来创建：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BOOL</span> ignoreAdHocWiFi = <span class="literal">NO</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> sockaddr_in ipAddress;</span><br><span class="line">bzero(&amp;ipAddress, <span class="keyword">sizeof</span>(ipAddress));</span><br><span class="line">ipAddress.sin_len = <span class="keyword">sizeof</span>(ipAddress);</span><br><span class="line">ipAddress.sin_family = AF_INET;</span><br><span class="line">ipAddress.addr.s_addr = htonl(ignoreAdHocWiFi ? INADDR_ANY : IN_LINKLOCALNETNUM);</span><br><span class="line"></span><br><span class="line"><span class="built_in">SCNetworkReachabilityRef</span> networkReachability =</span><br><span class="line">    <span class="built_in">SCNetworkReachabilityCreateWithAddress</span>(kCFAllocatorDefault,</span><br><span class="line">    (<span class="keyword">struct</span> sockaddr *)ipAddress);</span><br></pre></td></tr></table></figure>
+
+<p><code>SCNetworkReachabilityFlags</code> 是一个同步调用，用于确定可用网络接口的可达性。因为有很多不同的因素影响可达性，所以这个函数返回值不是一个简单的 <code>YES</code> &#x2F; <code>NO</code>，而是一个特征位掩码（bitmask of characteristics）：</p>
+<p style="text-align: center;">Reachability Flag Values</p>
+
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Reachable</td>
+<td align="left">使用当前的网络配置可以访问指定的节点名称或者地址。</td>
+</tr>
+<tr>
+<td align="left">Transient Connection</td>
+<td align="left">可以通过一个瞬态连接（如 PPP）访问指定的节点名称或地址。</td>
+</tr>
+<tr>
+<td align="left">Connection Required</td>
+<td align="left">使用当前的网络配置可以访问指定的节点名称或者地址，但必须先建立连接。</td>
+</tr>
+<tr>
+<td align="left">Connection On Traffic</td>
+<td align="left">使用当前的网络配置可以访问指定的节点名称或者地址，但必须先建立连接。任何针对指定名称或地址的传输都将启动连接。</td>
+</tr>
+<tr>
+<td align="left">Connection On Demand</td>
+<td align="left">使用当前的网络配置可以访问指定的节点名称或者地址，但必须先建立连接。</td>
+</tr>
+<tr>
+<td align="left">Intervention Required</td>
+<td align="left">使用当前的网络配置可以访问指定的节点名称或者地址，但必须先建立连接。另外，将需要某种形式的用户干预来建立此连接，例如提供密码，认证 token 等。</td>
+</tr>
+<tr>
+<td align="left">Is Local Address</td>
+<td align="left">指定的节点名称或地址是与当前系统上的网络接口相关联的。</td>
+</tr>
+<tr>
+<td align="left">Is Direct</td>
+<td align="left">网络传输到指定的节点名称或地址将不会通过网关（gateway），而是直接路由（routed）到系统的一个接口上。</td>
+</tr>
+</tbody></table>
+<p>尽管网络接口的复杂性非常是有趣的，但它们只是对 app 开发者的学术练习（academic exercise），就像它们的用户，真的喜欢 <code>YES</code> 或 <code>NO</code> 答案。</p>
+<p>下面是如何归纳一个复杂的真理：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BOOL</span> isReachable = ((flags &amp; kSCNetworkReachabilityFlagsReachable) != <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">BOOL</span> needsConnection = ((flags &amp; kSCNetworkReachabilityFlagsConnectionRequired) != <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">BOOL</span> canConnectionAutomatically =</span><br><span class="line">    (((flags &amp; kSCNetworkReachabilityFlagsConnectionOnDemand) != <span class="number">0</span>) ||</span><br><span class="line">    ((flags &amp; kSCNetworkReachabilityFlagsConnectionOnTraffic) != <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line"><span class="type">BOOL</span> canConnectWithoutUserInteraction =</span><br><span class="line">    (canConnectionAutomatically &amp;&amp; (flags &amp; kSCNetworkReachabilityFlagsInterventionRequired) == <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">BOOL</span> isNetworkReachable = (isReachable &amp;&amp; (!needsConnection || canConnectWithoutUserInteraction));</span><br></pre></td></tr></table></figure>
+
+<p>再进一步，reachability flags 也可以用于确定正在使用哪个网络接口：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isNetworkReachable == <span class="literal">NO</span>) &#123;</span><br><span class="line">    <span class="comment">// Not Reachable</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> TARGET_OS_IPHONE</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ((flags &amp; kSCNetworkReachabilityFlagsIsWWAN) != <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// Reachable via WWAN</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// Reachable via WiFi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在主线程上调用 <code>SCNetworkReachabilityFlags</code> 发起一个 30 秒超时的 DNS 查找。这样不好，不要阻塞，同步调用 <code>SCNetworkReachabilityFlags</code>。</p>
+<h2 id="0x0202-Determining-Network-Reachability-Asynchronously"><a href="#0x0202-Determining-Network-Reachability-Asynchronously" class="headerlink" title="0x0202 Determining Network Reachability Asynchronously"></a>0x0202 Determining Network Reachability Asynchronously</h2><p>幸运的是，System Configuration 框架提供了一组用于异步监控 reachability 变化的 API。</p>
+<p>首先，定义一个静态回调函数，该函数需要网络 reachability reference，flags 以及要传递的任何附加 context。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">void</span> ReachabilityCallback(<span class="built_in">SCNetworkReachabilityRef</span> target,</span><br><span class="line">                                 <span class="built_in">SCNetworkConnectionFlags</span> flags,</span><br><span class="line">                                 <span class="type">void</span> *context) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一旦声明了回调函数，它就可以被设置到 <code>SCNetworkReachabilityRef</code> 上，然后在 runloop 上调度：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SCNetworkReachabilityContext</span> context = &#123;<span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">SCNetworkReachabilitySetCallback</span>(networkReachability, ReachabilityCallback, &amp;context);</span><br><span class="line"></span><br><span class="line"><span class="built_in">SCNetworkReachabilityScheduleWithRunLoop</span>(reachability, <span class="built_in">CFRunLoopGetMain</span>(), kCFRunLoopCommonModes);</span><br></pre></td></tr></table></figure>
+
+<p>现在，每当设置的网络 reachability 发生变化，<code>ReachabilityCallback</code> 函数就会被调用。然后，可以通过发布到 <code>NSNotificationQueue</code>，或通过调用一个 block 传递到 <code>SCNetworkReachabilityContext</code> 参数中，将此信息传达给应用程序。</p>
+<h1 id="0x03-Network-Configuration-Settings"><a href="#0x03-Network-Configuration-Settings" class="headerlink" title="0x03 Network Configuration Settings"></a>0x03 Network Configuration Settings</h1><p>原谅有人认为 System Configuration 是一个 one-trick pony。几乎每个对该框架的提及都是在引用网络 reachability，也就是它本身是一个以该死的 Reachability 例子为主导的话题。</p>
+<p>更模糊的功能与查询系统的动态存储有关：<code>SCDynamicStore</code>。这些 API 仅在 OS X 上可用。</p>
+<h2 id="0x0301-Query"><a href="#0x0301-Query" class="headerlink" title="0x0301 Query"></a>0x0301 Query</h2><p><code>SCDynamicStoreRef</code> 为当前系统配置提供了一个键-值接口，该接口由 <code>configd</code> 守护程序（daemon）管理。</p>
+<p>可用使用 <code>SCDynamicStoreCopyKeyList</code> 获取可用的 key 列表：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SCDynamicStoreContext context = &#123; <span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span> &#125;;</span><br><span class="line">SCDynamicStoreRef store = SCDynamicStoreCreate(<span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">nil</span>, &amp;context);</span><br><span class="line"><span class="built_in">NSArray</span> *keys = (__bridge_transfer <span class="built_in">NSArray</span> *)SCDynamicStoreCopyKeyList(store, <span class="built_in">CFSTR</span>(<span class="string">&quot;.+&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Setup:&#x2F; Network&#x2F;Service&#x2F;…IPv4,</li>
+<li>Setup:&#x2F; Network&#x2F;Service&#x2F;…IPv6,</li>
+<li>… 100+ Items …</li>
+<li>State:&#x2F;Network&#x2F;Interface&#x2F;p2p0&#x2F;Link,</li>
+<li>State:&#x2F;Network&#x2F;Interface&#x2F;lo0&#x2F;IPv6,</li>
+<li>State:&#x2F;IOKit&#x2F;LowBatteryWarning,</li>
+<li>State:&#x2F;Network&#x2F;MulticastDNS,</li>
+<li>State:&#x2F;Network&#x2F;Global&#x2F;Proxies,</li>
+<li>State:&#x2F;Network&#x2F;Interface&#x2F;bridge0&#x2F;Link</li>
+</ul>
+<p>注：完整的 key 列表可以查看 Apple 的 <a target="_blank" rel="noopener" href="https://developer.apple.com/">System Configuration Programming Guide</a>。</p>
+<p>有了 key 的列表，<code>SCDynamicStore</code> 的目的变得更清晰。IP 地址和网络接口更改时应用程序能够收到通知，甚至当设备电池过低时也能收到通知。</p>
+<p>这里与用于监控网络可达性的语义相同。</p>
+<p>例如，可以使用 <code>State:/Network/Interface</code> key 找到可用网络接口的列表：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SCDynamicStoreContext context = &#123; <span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span> &#125;;</span><br><span class="line">SCDynamicStoreRef store = SCDynamicStoreCreate(<span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">nil</span>, &amp;context);</span><br><span class="line"><span class="built_in">CFPropertyListRef</span> propertyList = SCDynamicStoreCopyValue(store, <span class="built_in">CFSTR</span>(<span class="string">&quot;State:/Network/Interface&quot;</span>));</span><br><span class="line"><span class="built_in">NSArray</span> *interfaces = (__bridge <span class="built_in">NSArray</span> *)<span class="built_in">CFDictionaryGetValue</span>(propertyList, <span class="built_in">CFSTR</span>(<span class="string">&quot;Interfaces&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>lo0</li>
+<li>gif0</li>
+<li>stf0</li>
+<li>en0</li>
+<li>en1</li>
+<li>en2</li>
+<li>bridge0</li>
+<li>p2p0</li>
+<li>utun0</li>
+</ul>
+<h2 id="0x0302-Monitoring"><a href="#0x0302-Monitoring" class="headerlink" title="0x0302 Monitoring"></a>0x0302 Monitoring</h2><p>动态存储的真正用处是能够监控更改，以便应用程序可以立即响应如 AirPort 被开启或本地 IP 地址发生变化等事情。</p>
+<p>在某种程度上，这只是一个监控网络可达性的更广泛的规划（formulation）。创建一个动态存储，监听一个特定的网络服务实体 key，并且设置一个回调函数指针：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="type">void</span> Callback(SCDynamicStoreRef store, <span class="built_in">CFArrayRef</span> changedKeys, <span class="type">void</span> *info) &#123;</span><br><span class="line">    <span class="keyword">if</span> (info) &#123;</span><br><span class="line">        ((<span class="type">void</span> (^)())info)(changedKeys);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">id</span> callback = ^(<span class="built_in">NSArray</span> *changedKeys) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">SCDynamicStoreContext context = &#123;<span class="number">0</span>, (__bridge <span class="type">void</span> *)callback, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>&#125;;</span><br><span class="line"></span><br><span class="line">SCDynamicStoreRef store = SCDnamicSoreCreate(<span class="literal">NULL</span>, <span class="built_in">CFSTR</span>(<span class="string">&quot;IPv4AddressMonitor&quot;</span>), Callback, &amp;context);</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSString</span> *ipv4 =</span><br><span class="line">    (<span class="built_in">NSString</span> *)SCDynamicStoreKeyCreateNetworkServiceEntity(<span class="literal">NULL</span>,</span><br><span class="line">                                                            kSCDynamicStoreDomainState,</span><br><span class="line">                                                            kSCCompAnyRegex,</span><br><span class="line">                                                            kSCEntNetIPv4);</span><br><span class="line"></span><br><span class="line">SCDynamicStoreSetNotificationKeys(store, <span class="literal">NULL</span>, @[ipv4]);</span><br><span class="line">SCDynamicStoreSetDispatchQueue(store, dispatch_get_main_queue());</span><br></pre></td></tr></table></figure>
+
+<p>语言是我们特有的意识的本质。这就是我们如何思考。这就是为什么我们完全可以思考。</p>
+<p>我们依据名词来理解世界，用动词浏览它。形容词将将离散观察结果集中到感觉和判断中。我们通过前辈们的书面记录作为一个社会进步。最后，这将会是我们自己的文字，比我们更久。</p>
+<p>我们能够交流完全是一个奇迹。这些想法可以心灵（mind）转移到另一个心灵，是超越信仰的 —— 但是很好理解，它几乎没有记录第二个想法。通过沟通，我们创造彼此之间的理解。我们唤起同情，并扩大我们的道德考虑边界给别人。我们的世界变得更大。</p>
+<p>然而，当语言的距离太难以克服，沟通失败时，它变得难以同情。一种别样的感觉。无论是个人的还是国际的，沟通失败仍然是冲突的主要原因。</p>
+<p>作为一项消除语言和文化距离的技术，有一个强有力的案例表明，Unicode 是为我们的物种创造的最重要的技术之一。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+              <a href="/tags/Reachability/" rel="tag"># Reachability</a>
+              <a href="/tags/Network/" rel="tag"># Network</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter10-Security/" rel="prev" title="Security">
+                  <i class="fa fa-chevron-left"></i> Security
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/05/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter12-International-Components-for-Unicode/" rel="next" title="International Components for Unicode">
+                  International Components for Unicode <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

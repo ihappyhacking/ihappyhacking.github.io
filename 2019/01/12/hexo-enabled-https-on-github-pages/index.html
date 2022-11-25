@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言2018 年 5 月 1 日 GitHub 官网宣布了 GitHub Pages 自定义域名增加对 HTTPS 的支持，不过我那时候在做自己的个人项目，就懒得去更新了，一直拖到现在，也算是懒癌发作了。 首先说明一下，我的域名（meilbn.com）是在 Godaddy 买的，不过域名解析使用的是腾讯云的 DNSPod，如何配置什么的我就不讲了，可以在网上找到很多资料，我这里就只讲一下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为 Hosting 在 GitHub Pages 的 Hexo 博客开启 HTTPS">
+<meta property="og:url" content="https://meilbn.com/2019/01/12/hexo-enabled-https-on-github-pages/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言2018 年 5 月 1 日 GitHub 官网宣布了 GitHub Pages 自定义域名增加对 HTTPS 的支持，不过我那时候在做自己的个人项目，就懒得去更新了，一直拖到现在，也算是懒癌发作了。 首先说明一下，我的域名（meilbn.com）是在 Godaddy 买的，不过域名解析使用的是腾讯云的 DNSPod，如何配置什么的我就不讲了，可以在网上找到很多资料，我这里就只讲一下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fadea6a9e.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39faefdd98f.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb0207b26.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb0d8428c.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb27c1342.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb1aa1272.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb31cee30.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb4c5e564.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb56b27c3.png">
+<meta property="og:image" content="https://i.loli.net/2019/01/12/5c39fb60e88a1.png">
+<meta property="article:published_time" content="2019-01-12T08:14:23.000Z">
+<meta property="article:modified_time" content="2019-01-13T02:08:11.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="GitHub">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/01/12/5c39fadea6a9e.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2019/01/12/hexo-enabled-https-on-github-pages/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2019/01/12/hexo-enabled-https-on-github-pages/","path":"2019/01/12/hexo-enabled-https-on-github-pages/","title":"为 Hosting 在 GitHub Pages 的 Hexo 博客开启 HTTPS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>为 Hosting 在 GitHub Pages 的 Hexo 博客开启 HTTPS | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-%E4%B8%80%E6%AD%A5%E5%88%B0%E4%BD%8D"><span class="nav-number">2.</span> <span class="nav-text">0x01 一步到位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-%E6%9B%B4%E6%96%B0-DNS-%E8%AE%B0%E5%BD%95"><span class="nav-number">3.</span> <span class="nav-text">0x02 更新 DNS 记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-%E8%87%AA%E5%A1%AB%E8%87%AA%E5%9D%91"><span class="nav-number">4.</span> <span class="nav-text">0x03 自填自坑</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2019/01/12/hexo-enabled-https-on-github-pages/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="为 Hosting 在 GitHub Pages 的 Hexo 博客开启 HTTPS | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          为 Hosting 在 GitHub Pages 的 Hexo 博客开启 HTTPS
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-01-12 16:14:23" itemprop="dateCreated datePublished" datetime="2019-01-12T16:14:23+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-13 10:08:11" itemprop="dateModified" datetime="2019-01-13T10:08:11+08:00">2019-01-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Hexo/" itemprop="url" rel="index"><span itemprop="name">Hexo</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/01/12/hexo-enabled-https-on-github-pages/" class="post-meta-item leancloud_visitors" data-flag-title="为 Hosting 在 GitHub Pages 的 Hexo 博客开启 HTTPS" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>2018 年 5 月 1 日 GitHub 官网宣布了 <a target="_blank" rel="noopener" href="https://blog.github.com/2018-05-01-github-pages-custom-domains-https/">GitHub Pages 自定义域名增加对 HTTPS 的支持</a>，不过我那时候在做自己的个人项目，就懒得去更新了，一直拖到现在，也算是懒癌发作了。</p>
+<p>首先说明一下，我的域名（meilbn.com）是在 <a target="_blank" rel="noopener" href="https://www.godaddy.com/">Godaddy</a> 买的，不过域名解析使用的是腾讯云的 <a target="_blank" rel="noopener" href="https://www.dnspod.cn/">DNSPod</a>，如何配置什么的我就不讲了，可以在网上找到很多资料，我这里就只讲一下如何开启 HTTPS，非常简单，不过我也遇到了一个“坑”。</p>
+<span id="more"></span>
+
+<h1 id="0x01-一步到位"><a href="#0x01-一步到位" class="headerlink" title="0x01 一步到位"></a>0x01 一步到位</h1><p>首先，假设你设置的 DNS 解析地址是正确的，你可以直接在你的 GitHub 上的博客项目仓库的设置中直接开启 HTTPS：</p>
+<ul>
+<li>进入仓库的设置：</li>
+</ul>
+<p><img src="https://i.loli.net/2019/01/12/5c39fadea6a9e.png"></p>
+<ul>
+<li>勾选 Enforce HTTPS (可能你网页拉下来的时候并没有，需要一点时间才会显示出来)</li>
+</ul>
+<p><img src="https://i.loli.net/2019/01/12/5c39faefdd98f.jpg"></p>
+<p>如果你这里并不像截图中的这样，没有黄色的警告，并且勾选框也是可以勾选的（我这里并不能勾选），那么你就直接勾选上，然后可能需要等一会，你打开你的博客（或者刷新），那么，你的博客就已经是 HTTPS 开头的了，你也不需要继续往下看了。</p>
+<p>But,</p>
+<p>要是你这里跟我一样，那么，请继续耐心地往下看。</p>
+<h1 id="0x02-更新-DNS-记录"><a href="#0x02-更新-DNS-记录" class="headerlink" title="0x02 更新 DNS 记录"></a>0x02 更新 DNS 记录</h1><p>因为以前用的是 HTTP，所以在 <a target="_blank" rel="noopener" href="https://www.dnspod.cn/">DNSPod</a> 里的 <code>A</code> 记录的地址填的是 <code>192.30.252.153</code> 或者 <code>192.30.252.154</code>，这是没有任何问题的，但是现在要换成 HTTPS，就不能继续用这个 IP 地址了（具体可以查看<a target="_blank" rel="noopener" href="https://help.github.com/articles/troubleshooting-custom-domains/#dns-configuration-errors">这里</a>的绿色 <code>Notes</code>）。</p>
+<p>接下来开始讲我遇到的这个“坑”。</p>
+<h1 id="0x03-自填自坑"><a href="#0x03-自填自坑" class="headerlink" title="0x03 自填自坑"></a>0x03 自填自坑</h1><p>因为我使用的是 <a target="_blank" rel="noopener" href="https://www.dnspod.cn/">DNSPod</a>，并不能添加 <code>ALIAS</code> 或 <code>ANAME</code> 记录，只能用 <code>A</code> 记录，所以根据官网的<a target="_blank" rel="noopener" href="https://help.github.com/articles/setting-up-an-apex-domain/#configuring-an-alias-or-aname-record-with-your-dns-provider">文档</a>，添加 <code>A</code> 记录的 IP 地址，有如下 4 条：</p>
+<ul>
+<li>185.199.108.153</li>
+<li>185.199.109.153</li>
+<li>185.199.110.153</li>
+<li>185.199.111.153</li>
+</ul>
+<p>我以为是 4 条都要添加，结果 <a target="_blank" rel="noopener" href="https://www.dnspod.cn/">DNSPod</a> 里免费的账户只能添加 2 条 <code>A</code> 记录：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb0207b26.png"></p>
+<p>然后我看了一下升级套餐：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb0d8428c.png"></p>
+<p>发现好贵，遂作罢，想换其他的 DNS 解析服务商。注册了 <a target="_blank" rel="noopener" href="https://www.namecheap.com/">NameCheap</a>，发现好像不是 <a target="_blank" rel="noopener" href="https://www.namecheap.com/">NameCheap</a> 上买的域名不能使用 DNS 解析服务（或者是我没找到）。</p>
+<p>然后回过头来，重新看了下博客仓库的设置界面（刷新），发现警告没有了：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb27c1342.png"></p>
+<p>一看下面的勾选框也可以勾选了：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb1aa1272.png"></p>
+<p><strong>原来不需要 4 条记录全部加上</strong>，我只加了两条：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb31cee30.png"></p>
+<p>可能一条也可以吧，不过我没去试。</p>
+<p>勾选了之后：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb4c5e564.png"></p>
+<p>博客原来的地址栏是 HTTP 的：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb56b27c3.png"></p>
+<p>现在刷新一下就是 HTTPS 的了：</p>
+<p><img src="https://i.loli.net/2019/01/12/5c39fb60e88a1.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+              <a href="/tags/GitHub/" rel="tag"># GitHub</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/18/app-framework-supported-device-colors/" rel="prev" title="FrameWork 支持的手机壳颜色">
+                  <i class="fa fa-chevron-left"></i> FrameWork 支持的手机壳颜色
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/18/windows-10-pro-activation/" rel="next" title="Windows 10 专业版激活方法（Windows 10 Professional Activation）">
+                  Windows 10 专业版激活方法（Windows 10 Professional Activation） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CSource+Code+Pro:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"meilbn.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"disqus | disqusjs","storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 10 Security 时做的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Security">
+<meta property="og:url" content="https://meilbn.com/2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter10-Security/index.html">
+<meta property="og:site_name" content="Happy Hacking">
+<meta property="og:description" content="0x00 前言这篇文章是自己在学习 CFHipsterRef Chapter 10 Security 时做的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/11/01/5bdac1068ea65.png">
+<meta property="article:published_time" content="2016-11-03T14:21:05.000Z">
+<meta property="article:modified_time" content="2019-01-12T09:54:57.000Z">
+<meta property="article:author" content="我的眼里只有代码">
+<meta property="article:tag" content="Objective-C">
+<meta property="article:tag" content="Security">
+<meta property="article:tag" content="Keychain">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/01/5bdac1068ea65.png">
+
+
+<link rel="canonical" href="https://meilbn.com/2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter10-Security/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://meilbn.com/2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter10-Security/","path":"2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter10-Security/","title":"Security"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Security | Happy Hacking</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Happy Hacking</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">我的眼里只有代码</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Security"><span class="nav-number">2.</span> <span class="nav-text">0x01 Security</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-%E8%8E%B7%E5%8F%96-Keychain-Items"><span class="nav-number">3.</span> <span class="nav-text">0x02 获取 Keychain Items</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-%E6%B7%BB%E5%8A%A0%E5%92%8C%E6%9B%B4%E6%96%B0-Keychain-Items"><span class="nav-number">4.</span> <span class="nav-text">0x03 添加和更新 Keychain Items</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-%E5%8A%A0%E5%AF%86%E6%B6%88%E6%81%AF%E8%AF%AD%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">0x04 加密消息语法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-Certificate-Key-%E5%92%8C-Trust-Services"><span class="nav-number">6.</span> <span class="nav-text">0x05 Certificate, Key 和 Trust Services</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x06-Security-Transform-Services"><span class="nav-number">7.</span> <span class="nav-text">0x06 Security Transform Services</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x07-Randomization-Services"><span class="nav-number">8.</span> <span class="nav-text">0x07 Randomization Services</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x08-CommonCrypto"><span class="nav-number">9.</span> <span class="nav-text">0x08 CommonCrypto</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0801-%E6%91%98%E8%A6%81%EF%BC%88Digests%EF%BC%89"><span class="nav-number">9.1.</span> <span class="nav-text">0x0801 摘要（Digests）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x09-HMAC"><span class="nav-number">10.</span> <span class="nav-text">0x09 HMAC</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0A-Symmetric-Encryption"><span class="nav-number">11.</span> <span class="nav-text">0x0A Symmetric Encryption</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我的眼里只有代码"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">我的眼里只有代码</p>
+  <div class="site-description" itemprop="description">You are the code of my eye.<br>'Cause you are the apple of my eye.</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meilbn" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/fuckingcode" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;fuckingcode" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/meilbn" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/meilbn" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i>FB Page</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/4318339/meilbn" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;4318339&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/meilbn" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;meilbn" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter10-Security/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Security | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Security
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-11-03 22:21:05" itemprop="dateCreated datePublished" datetime="2016-11-03T22:21:05+08:00">2016-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2019-01-12 17:54:57" itemprop="dateModified" datetime="2019-01-12T17:54:57+08:00">2019-01-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter10-Security/" class="post-meta-item leancloud_visitors" data-flag-title="Security" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://i.loli.net/2018/11/01/5bdac1068ea65.png"></p>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>这篇文章是自己在学习 <a target="_blank" rel="noopener" href="https://gum.co/cfhipsterref">CFHipsterRef</a> Chapter 10 Security 时做的笔记。</p>
+<span id="more"></span>
+
+<h1 id="0x01-Security"><a href="#0x01-Security" class="headerlink" title="0x01 Security"></a>0x01 Security</h1><p>使用 Security 框架，应用程序可以以编程方式访问 keychain，允许对用户数据进行受保护访问，不会不断地提示进行身份验证。</p>
+<p>不幸的是，最终用户的便利性是以开发者为代价的，因为在 Cocoa 中有一些用来与 Keychain 交互的 API 很麻烦。</p>
+<p>与 Keychain 的交互是通过查询来调解的，而不是直接操作。查询本身可能相当复杂，并且使用 C API 很麻烦。</p>
+<p>查询是由以下组件组成的字典（dictionary）：</p>
+<ul>
+<li>要搜索的项目的类别，”Generic Password”，”Internet Password”，”Certificate”，”Key” 或 “Identity”。</li>
+<li>查询返回类型，”Data”，”Attributes”，”Reference” 或 “Persistent Reference”。</li>
+<li>匹配一个或多个属性（attribute）键值对。</li>
+<li>一个或多个搜索键值对以进一步修改结果，例如匹配字符串是否区分大小写，只匹配信任的证书，或者限制只有一个结果或返回全部。</li>
+</ul>
+<p>字符串常量用于几乎所有的键和很多的值，这使得很多 <code>__bridge id</code> 转换 和文档查找。</p>
+<h1 id="0x02-获取-Keychain-Items"><a href="#0x02-获取-Keychain-Items" class="headerlink" title="0x02 获取 Keychain Items"></a>0x02 获取 Keychain Items</h1><p>要获取 Keychain item，先构造一个查询，并传递给 <code>SecItemCopyMatching</code>：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *service = <span class="string">@&quot;com.example.app&quot;</span>;</span><br><span class="line"><span class="built_in">NSString</span> *account = <span class="string">@&quot;username&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSDictionary</span> *query = @&#123;</span><br><span class="line">    (__bridge <span class="type">id</span>)kSecClass:(__bridge <span class="type">id</span>)kSecClassGenericPassword,</span><br><span class="line">    (__bridge <span class="type">id</span>)kSecAttrService : service,</span><br><span class="line">    (__bridge <span class="type">id</span>)kSecAttrAccount : key,</span><br><span class="line">    (__bridge <span class="type">id</span>)kSecMatchLimit : kSecMatchLimitOne,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFTypeRef</span> result;</span><br><span class="line">OSStatus status = SecItemCopyMatching((__bridge <span class="built_in">CFDictionaryRef</span>)query, &amp;result);</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，查询指示 keychain 使用匹配的 username 查找服务 <code>com.example.app</code> 的所有通用密码项。<code>kSecAttrService</code> 定义了凭证的范围，而 <code>kSecAttrAccount</code> 作为一个唯一标识符。传递的搜索选项 <code>kSecMatchLimitOne</code> 确保只返回第一个匹配的结果（如果有的话）。</p>
+<p>如果 <code>status</code> 等于 <code>errSecSuccess</code> （0），则 <code>result</code> 应该被匹配的凭证所填充。</p>
+<h1 id="0x03-添加和更新-Keychain-Items"><a href="#0x03-添加和更新-Keychain-Items" class="headerlink" title="0x03 添加和更新 Keychain Items"></a>0x03 添加和更新 Keychain Items</h1><p>也许是 Keychain Services APIs 的主要症结，但是，为了写到 keychain，必须先读取它。有两个写方法：<code>SecItemAdd</code> 和 <code>SecItemUpdate</code>。用具有已匹配现有 item 的属性调用的 <code>SecItemAdd</code> 会返回状态码 <code>errSecDuplicateItem</code>。用没有匹配现有 item 的属性调用 <code>SecItemUpdate</code> 会返回状态码 <code>errSecItemNotFound</code>。因为缺少 <code>UPSERT</code> 类型命令，其中一个是每次都会被 resigned 以有条件地相应：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSData</span> *data = ...;</span><br><span class="line"><span class="keyword">if</span> (status == errSecSuccess) &#123;</span><br><span class="line">    <span class="built_in">NSDictionary</span> *updatedAttributes = @&#123;(__bridge <span class="type">id</span>)kSecValueData : data&#125;;</span><br><span class="line">    </span><br><span class="line">    SecItemUpdate((__bridge <span class="built_in">CFDictionaryRef</span>)query, (__bridge <span class="built_in">CFDictionaryRef</span>)updatedAttributes);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *attributes = [query mutableCopy];</span><br><span class="line">    attributes[(__bridge <span class="type">id</span>)kSecValueData] = data;</span><br><span class="line">    attributes[(__bridge <span class="type">id</span>)kSecAttrAccessible] = (__bridge <span class="type">id</span>)kSecAttrAccessibleAfterFirstUnlock;</span><br><span class="line">    </span><br><span class="line">    SecItemAdd((__bridge <span class="built_in">CFDictionaryRef</span>)attributes, <span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上一示例开始，使用 <code>kSecValueData</code> 属性 key 在 item 上设置任意数据。原始查询被复制并合并到 <code>SecItemAdd</code> 的另外的属性，而在更新的属性被传给 <code>SecItemUpdate</code>。</p>
+<h1 id="0x04-加密消息语法"><a href="#0x04-加密消息语法" class="headerlink" title="0x04 加密消息语法"></a>0x04 加密消息语法</h1><p>加密消息语法（Cryptographic Message Syntax）是 IETF 用于 S&#x2F;MIME 消息的公钥加密和数字签名的标准。Apple 的加密消息语法服务在 Security 框架中提供了实现这些行业标准算法的 API。</p>
+<p>如 <a href="http://meilbn.com/2016/11/02/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter7-Core-Services/">Core Services</a> 章节所述，MIME 是使 email，恩，有用的互联网标准。如果没有它，email 将不支持非 ASCII 字符或附件。S&#x2F;MIME 中的 S 指的是如何安全地发送和接收这些消息。</p>
+<p>消息可以由任意数量的签名者或收件人签名或加密，或同时签名和加密。对一个消息签名是允许收件人验证其发件人。对一个消息加密是为了确保这个消息对除了收件人可以解密消息内容之外的任何人都保密。这两个操作是正交的（orthogonal），但是与密码相关。</p>
+<p>编码一个消息</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSData</span> *data;</span><br><span class="line">SecCertificateRef certificateRef;</span><br><span class="line"></span><br><span class="line"><span class="built_in">CMSEncoderRef</span> encoder;</span><br><span class="line"><span class="built_in">CMSEncoderCreate</span>(&amp;encoder);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Encrypt</span></span><br><span class="line"><span class="built_in">CMSEncoderUpdateContent</span>(encoder, [data bytes], [data length]);</span><br><span class="line"><span class="built_in">CMSEncoderAddRecipients</span>(encoder, certificateRef);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sign</span></span><br><span class="line">SecIdentityRef identityRef = <span class="literal">nil</span>;</span><br><span class="line">SecIdentityCreateWithCertificate(<span class="literal">nil</span>, certificateRef, &amp;identityRef);</span><br><span class="line"><span class="built_in">CMSEncoderUpdateContent</span>(encoder, [data bytes], [data length]);</span><br><span class="line"><span class="built_in">CMSEncoderAddSigners</span>(encoder, identityRef);</span><br><span class="line"><span class="built_in">CFRelease</span>(identityRef);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CMSEncoderUpdateContent</span>(encoder, [data bytes], [data length]);</span><br><span class="line"><span class="built_in">CMSEncoderAddSignedAttributes</span>(encoder, kCMSAttrSmimeCapabilities);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFDataRef</span> encryptedDataRef;</span><br><span class="line"><span class="built_in">CMSEncoderCopyEncodedContent</span>(encoder, &amp;encryptedDataRef);</span><br><span class="line"><span class="built_in">NSData</span> *encryptedData = [<span class="built_in">NSData</span> dataWithData:(__bridge <span class="built_in">NSData</span> *)encryptedDataRef];</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFRelease</span>(encoder);</span><br></pre></td></tr></table></figure>
+
+<p>解码一个消息</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CMSDecoderRef</span> decoder;</span><br><span class="line"><span class="built_in">CMSDecoderCreate</span>(&amp;decoder);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CMSDecoderUpdateMessage</span>(decoder, [encryptedData bytes], [encryptedData length]);</span><br><span class="line"><span class="built_in">CMSDecoderFinalizeMessage</span>(decoder);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFDataRef</span> decryptedDataRef;</span><br><span class="line"><span class="built_in">CMSDecoderCopyContent</span>(decoder, &amp;decryptedDataRef);</span><br><span class="line"><span class="built_in">NSData</span> *decryptedData = [<span class="built_in">NSData</span> dataWithData:(__bridge <span class="built_in">NSData</span> *)decryptedDataRef];</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFRelease</span>(decryptedDataRef);</span><br><span class="line"><span class="built_in">CFRelease</span>(decoder);</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x05-Certificate-Key-和-Trust-Services"><a href="#0x05-Certificate-Key-和-Trust-Services" class="headerlink" title="0x05 Certificate, Key 和 Trust Services"></a>0x05 Certificate, Key 和 Trust Services</h1><p>数字证书用来验证其持有人和发送人的身份。</p>
+<p>理解证书（certificates） 最好的方法是打开一个，看看里面有什么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ openssl x509 -<span class="keyword">in</span> certificate.pem -noout -text</span><br><span class="line"></span><br><span class="line">Certificate:</span><br><span class="line"></span><br><span class="line">    Data:</span><br><span class="line">        Version: 1 (0x0)</span><br><span class="line">        Serial Number: 4919 (0x1337)</span><br><span class="line">        Signature Algorithm: md5WithRSAEncryption</span><br><span class="line">        Issuer: C=ZA, ST=Western Cape, L=Cape Town, O=Thawte Consulting cc,</span><br><span class="line">                OU=Certification Services Division,</span><br><span class="line">                CN=Thawte Server CA/emailAddress=server-certs@thawte.com</span><br><span class="line">        Validity</span><br><span class="line">            Not Before: Jun 2 18:00:00 2014 GMT</span><br><span class="line">            Not After : Jun 2 18:00:00 2015 GMT</span><br><span class="line">        Subject: C=US, ST=Oregon, L=Portland, O=Mattt Thompson,</span><br><span class="line">            OU=NSHipster, CN=nshipster.com/emailAddress=mattt@nshipster.com</span><br><span class="line">        Subject Public Key Info:</span><br><span class="line">            Public Key Algorithm: rsaEncryption</span><br><span class="line">            RSA Public Key: (1024 bit)</span><br><span class="line">                Modulus (1024 bit):</span><br><span class="line">                    cb:1c:00:aa:bb:89:a0:4c:26:<span class="built_in">cd</span>:8c:4b:0b:13:88:...</span><br><span class="line">                Exponent: 65537 (0x10001)</span><br><span class="line">    Signature Algorithm: md5WithRSAEncryption</span><br><span class="line">        f5:5c:d6:a0:bf:39:95:fb:fa:ba:f5:f5:5a:d5:d9:f8:42:6b:...</span><br></pre></td></tr></table></figure>
+
+<p>与其笨重的声誉相反，证书非常容易解析和理解 —— 总之即使对于没有熟练掌握密码学的人来说。</p>
+<p>通过扫描纯文本输出，几个信息浮出表面：</p>
+<ul>
+<li>证书发行人（Certificate issuer）</li>
+<li>有效期（Validity period）</li>
+<li>证书持有者（Certificate holder）</li>
+<li>所有者的公钥（Public key of the owner）</li>
+<li>来自证书认证机构的数字签名（Digital signature from the certiﬁcation authority）</li>
+</ul>
+<p>每个证书都由其颁发证书进行验证，如此沿着证书链建立信任，一直到由认证机构颁发的根证书。</p>
+<p>证书是用于保护互联网的密码基础结构的基础。具有证书的 iOS 和 OS X 开发者最常见的交互之一是验证来自一个 URL 请求的质询（challenge）：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURLAuthenticationChallenge</span> *challenge = ...;</span><br><span class="line">SecTrustRef trust = challenge.protectionSpace.serverTrust;</span><br><span class="line">SecPolicyRef X509Policy = SecPolicyCreateBasicX509();</span><br><span class="line">SecTrustSetPolicies(serverTrust, (__bridge <span class="built_in">CFArrayRef</span>)@[(__bridge <span class="type">id</span>)X509Policy]);</span><br><span class="line"></span><br><span class="line">SecTrustResultType result;</span><br><span class="line">assert(SecTrustEvaluate(trust, &amp;result) == errSecSuccess);</span><br></pre></td></tr></table></figure>
+
+<p><code>SecTrustEvaluate</code> 通过验证证书的签名以及证书链中的证书签名一起使证书生效（validates），直到锚证书（anchor certiﬁcate）。为每个指定的策略创建一个证书链，从 leaf 证书开始，检查链中的每一个证书，直到遇到无效的证书，没有更多的证书，或者发现了非默认信任设置的证书。</p>
+<p>在身份认证质询期间验证证书持有者的身份至关重要，因为它可以确保服务器是其声明的，并且可以用敏感信息进行信任。</p>
+<h1 id="0x06-Security-Transform-Services"><a href="#0x06-Security-Transform-Services" class="headerlink" title="0x06 Security Transform Services"></a>0x06 Security Transform Services</h1><p>密码学的根本考虑是保护消息从被发送者加密到被接收者解密的时间的含义。当该消息是原始二进制数据时，有时需要采取额外的步骤将该数据编码成文本表示。</p>
+<p>Base64 编码将二进制数据映射到 8 位 chunks，然后由 64 个可打印的 ASCII 字符表示。它对数据进行编码只需要 33% 的开销，不依赖于密文字符，并且具有相对直接的实现。它是一种 UTF-8 的二进制到文本编码。</p>
+<p>Base64 用于任何从 HTTP 基本授权到 CSS 文档中嵌入的 <code>data-uri</code> 资源，一直观地比较固定大小的字节序列，例如 MD5 或 SHA-1 校验和。</p>
+<p>Security 框架使用 <code>SecTransformExecute</code> 函数为 Base64（以及 Base32）编解码提供了内置的支持。</p>
+<p>要对数据进行编码，使用 <code>kSecBase64Encoding</code> 选项创建一个 <code>SecTransformRef</code> 的实例，然后调用 <code>SecTransformExecute</code>：</p>
+<p>Base64 编码</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SecTransformRef transform = SecEncodeTransformCreate(kSecBase64Encoding, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">SecTransformSetAttribute(transform, kSecTransformInputAttributeName, (__bridge <span class="built_in">CFDataRef</span>)data, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSData</span> *encodedData = (__bridge_transfer <span class="built_in">NSData</span> *)SecTransformExecute(transform, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFRelease</span>(transform);</span><br></pre></td></tr></table></figure>
+
+<p>逆向几乎是相同的，除了传 <code>kSecBase64Decoding</code> 到 <code>SecEncodeTransformCreate</code>：</p>
+<p>Base64 解码</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SecTransformRef transform = SecEncodeTransformCreate(kSecBase64Decoding, <span class="literal">NULL</span>);</span><br><span class="line"><span class="built_in">NSData</span> *decodedData = (__bridge_transfer <span class="built_in">NSData</span> *)SecTransformExecute(transform, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFRelease</span>(transform);</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x07-Randomization-Services"><a href="#0x07-Randomization-Services" class="headerlink" title="0x07 Randomization Services"></a>0x07 Randomization Services</h1><p>密码学是基于不可预测的随机值。没有什么保证，它只是安全剧场（security theater）。</p>
+<p><code>SecRandomCopyBytes</code> 从 <code>/dev/random</code> 读取，生成密码安全的随机字节。<code>/dev/random</code> 是在 Unix 上基于设备的环境噪声流熵（streams entropy）的一个特殊的文件。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSUInteger</span> length = <span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSMutableData</span> *mutableData = [<span class="built_in">NSMutableData</span> dataWithLength:length];</span><br><span class="line"></span><br><span class="line">OSStatus success = SecRandomCopyBytes(kSecRandomDefault, length, mutableData.mutableBytes);</span><br><span class="line"></span><br><span class="line">__Require_noErr(success, exit);</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x08-CommonCrypto"><a href="#0x08-CommonCrypto" class="headerlink" title="0x08 CommonCrypto"></a>0x08 CommonCrypto</h1><p>CommonCrypto 提供了方便的常见加密操作的 API，可以在 iOS 5.0+ 和 OS X 10.5+ 上使用。</p>
+<h2 id="0x0801-摘要（Digests）"><a href="#0x0801-摘要（Digests）" class="headerlink" title="0x0801 摘要（Digests）"></a>0x0801 摘要（Digests）</h2><p>加密 hash 函数在信息安全中扮演了重要的角色。被称为校验和（checksums），指纹或摘要，加密 hash 函数的输出几乎不能被逆向以找到输入。</p>
+<p>例如，”NSHipster” 的 SHA-1 校验和为 <code>7c33b28cb6fe3515548ee58812131de07afeef1b</code>，而对 “CFHipsterRef” 执行相同的 hash 函数生成 “342924012ebde06234135698b372e10c5b86c5b2”。</p>
+<p>要在代码中计算校验和，请使用 <code>CC_SHA1</code> 函数：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSData</span> *data = ...;</span><br><span class="line"></span><br><span class="line">uint8_t output[CC_SHA1_DIGEST_LENGTH];</span><br><span class="line">cc_SHA1(data.bytes, data.length, output);</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSData</span> *digest = [<span class="built_in">NSData</span> dataWithBytes:output length:CC_SHA1_DIGEST_LENGTH];</span><br></pre></td></tr></table></figure>
+
+<p>有很多加密 hash 函数，每个都有不同的安全特性和用例。开发者有责任评估自己产品的要求，以确定最合适的安全技术。</p>
+<h1 id="0x09-HMAC"><a href="#0x09-HMAC" class="headerlink" title="0x09 HMAC"></a>0x09 HMAC</h1><p>密钥散列消息认证码（keyed-hash message authentication code, HMAC）使用加密 hash 函数和密钥来生成可用于同时验证消息的完整性和真实性的代码。HMAC 的强度取决于加密 hash 函数的强度以及密钥的大小。HMAC 通常由 web 服务使用以确保受保护的调用只有被验证的用户可以访问。</p>
+<p>Common Crypto 提供了 <code>CCHmac</code> 用于生成 HMAC：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSData</span> *data, *key;</span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">int</span> length = CC_SHA1_DIGEST_LENGTH;</span><br><span class="line"><span class="type">unsigned</span> <span class="type">char</span> output[length];</span><br><span class="line"></span><br><span class="line">CCHmac(kCCHmacAlgSHA1, key.bytes, key.length, data.bytes, data.length, output);</span><br></pre></td></tr></table></figure>
+
+<h1 id="0x0A-Symmetric-Encryption"><a href="#0x0A-Symmetric-Encryption" class="headerlink" title="0x0A Symmetric Encryption"></a>0x0A Symmetric Encryption</h1><p>在作者撰写此文时，AES-128 &amp; PBKDF2 是安全对称加密的一种合理方法，即加密和解密消息。</p>
+<p>高级加密标准（The Advanced Encryption Standard, AES）是由美国国家标准和技术研究所（NIST）建立的一种加密规范。PBKDF2 是一种使用 hash 函数的方法，通常用于生成一个 block 或 序列码（stream cypher）的 key，就像 AES。</p>
+<p>Security 框架提供了构建 block 来进行对称加密，但是需要开发者自己实现特定的实现。</p>
+<p>第一步是创建一个函数，该函数从一个加密的密码生成一个 PBKDF2 key。Salt 是用作对密码执行单向函数的附加输入的随机数据。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSData</span> *AES128PBKDF2KeyWithPassword(<span class="built_in">NSString</span> *password,</span><br><span class="line">                                           <span class="built_in">NSData</span> *salt,</span><br><span class="line">                                           <span class="built_in">NSError</span> * __autoreleasing *error) &#123;</span><br><span class="line">    <span class="built_in">NSCParameterAssert</span>(password);</span><br><span class="line">    <span class="built_in">NSCParameterAssert</span>(salt);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSMutableData</span> *mutableDerivedKey = [<span class="built_in">NSMutableData</span> dataWithLength:kCCKeySizeAES128];</span><br><span class="line">    </span><br><span class="line">    CCCryptorStatus status =</span><br><span class="line">        CCKeyDerivationPBKDF(kCCPBKDF2,</span><br><span class="line">                             [password UTF8String],</span><br><span class="line">                             [password lengthOfBytesUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>],</span><br><span class="line">                             [salt bytes],</span><br><span class="line">                             [salt length],</span><br><span class="line">                             kCCPRFHmacAlgSHA256,</span><br><span class="line">                             <span class="number">1024</span>,</span><br><span class="line">                             [mutableDerivedKey mutableBytes],</span><br><span class="line">                             kCCKeySizeAES128);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSData</span> *derivedKey = <span class="literal">nil</span>;</span><br><span class="line">    <span class="keyword">if</span> (status != kCCSuccess) &#123;</span><br><span class="line">        <span class="keyword">if</span> (error) &#123;</span><br><span class="line">            *error = [[<span class="built_in">NSError</span> alloc] initWithDomain:<span class="literal">nil</span> code:status userInfo:<span class="literal">nil</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        derivedKey = [<span class="built_in">NSData</span> dataWithData:mutableDerivedKey];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> derivedKey;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，可以创建加密数据的函数，其将数据和密码加密，并将生成的 salt 和 初始值返回，以及执行操作的时候遇到的错误返回为输出参数：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSData</span> *AES128EncryotedDataWithData(<span class="built_in">NSData</span> *data,</span><br><span class="line">                                           <span class="built_in">NSString</span> *password,</span><br><span class="line">                                           <span class="built_in">NSData</span> * __autoreleasing *salt,</span><br><span class="line">                                           <span class="built_in">NSData</span> * __autoreleasing *initializationVector,</span><br><span class="line">                                           <span class="built_in">NSError</span> * __autoreleasing *error) &#123;</span><br><span class="line">    <span class="built_in">NSCParameterAssert</span>(initializationVector);</span><br><span class="line">    <span class="built_in">NSCParameterAssert</span>(salt);</span><br><span class="line">    </span><br><span class="line">    uint8_t *saltBuffer = malloc(<span class="number">8</span>);</span><br><span class="line">    SecRandomCopyBytes(kSecRandomDefault, <span class="number">8</span>, saltBuffer);</span><br><span class="line">    *salt = [<span class="built_in">NSData</span> dataWithBytes:saltBuffer length:<span class="number">8</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSData</span> *key = AES128PBKDF2KeyWithPassword(password, *salt, error);</span><br><span class="line">    </span><br><span class="line">    uint8_t *initializationVectorBuffer = malloc(kCCBlockSizeAES128);</span><br><span class="line">    SecRandomCopyBytes(kSecRandomDefault, kCCBlockSizeAES128, initializationVectorBuffer);</span><br><span class="line">    *initializationVector = [<span class="built_in">NSData</span> dataWithBytes:initializationVector length:kCCBlockSizeAES128];</span><br><span class="line">    </span><br><span class="line">    size_t size = [data length] + kCCBlockSizeAES128;</span><br><span class="line">    <span class="type">void</span> *buffer = malloc(size);</span><br><span class="line">    </span><br><span class="line">    size_t numberOfBytesEncrypted = <span class="number">0</span>;</span><br><span class="line">    CCCryptorStatus status =</span><br><span class="line">        CCCrypt(kCCEncrypt,</span><br><span class="line">                kCCAlgorithmAES128,</span><br><span class="line">                kCCOptionPKCS7Padding,</span><br><span class="line">                [key bytes],</span><br><span class="line">                [key length],</span><br><span class="line">                [*initializationVector bytes],</span><br><span class="line">                [data bytes],</span><br><span class="line">                [data length],</span><br><span class="line">                buffer,</span><br><span class="line">                size,</span><br><span class="line">                &amp;numberOfBytesEncrypted);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSData</span> *encryptedData = <span class="literal">nil</span>;</span><br><span class="line">    <span class="keyword">if</span> (status != kCCSuccess) &#123;</span><br><span class="line">        <span class="keyword">if</span> (error) &#123;</span><br><span class="line">            *error = [[<span class="built_in">NSError</span> alloc] initWithDomain:<span class="literal">nil</span> code:status userInfo:<span class="literal">nil</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       encryptedData = [[<span class="built_in">NSData</span> alloc] initWithBytes:buffer length:numberOfBytesEncrypted];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> encryptedData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，为了加密数据，逆向执行相同的过程，这次传递数据和密码以及从加密函数生成的 salt 和初始化向量：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">NSData</span> *AES128DecryptedDataWithData(<span class="built_in">NSData</span> *data,</span><br><span class="line">                                           <span class="built_in">NSString</span> *password,</span><br><span class="line">                                           <span class="built_in">NSData</span> *salt,</span><br><span class="line">                                           <span class="built_in">NSData</span> *initializationVector,</span><br><span class="line">                                           <span class="built_in">NSError</span> * __autoreleasing *error) &#123;</span><br><span class="line">    <span class="built_in">NSData</span> *key = AES128PBKDF2KeyWithPassword(password, salt, error);</span><br><span class="line">    </span><br><span class="line">    size_t size = [data length] + kCCBlockSizeAES128;</span><br><span class="line">    <span class="type">void</span> *buffer = malloc(size);</span><br><span class="line">    </span><br><span class="line">    size_t numberOfBytesDecrypted = <span class="number">0</span>;</span><br><span class="line">    CCCryptorStatus status =</span><br><span class="line">        CCCrypt(kCCCDecrypt,</span><br><span class="line">        kCCAlgorithmAES128,</span><br><span class="line">        kCCOptionPKCS7Padding,</span><br><span class="line">        [key bytes],</span><br><span class="line">        [key length],</span><br><span class="line">        [initializationVector bytes],</span><br><span class="line">        [data bytes],</span><br><span class="line">        [data length],</span><br><span class="line">        buffer,</span><br><span class="line">        size,</span><br><span class="line">        &amp;numberOfBytesDecrypted);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSData</span> *encryptedData = <span class="literal">nil</span>;</span><br><span class="line">    <span class="keyword">if</span> (status != kCCSuccess) &#123;</span><br><span class="line">        <span class="keyword">if</span> (error) &#123;</span><br><span class="line">            *error = [[<span class="built_in">NSError</span> alloc] initWithDomain:<span class="literal">nil</span> code:status userInfo:<span class="literal">nil</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        encryptedData = [[<span class="built_in">NSData</span> alloc] initWithBytes:buffer length:numberOfBytesDecrypted];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> encryptedData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Objective-C/" rel="tag"># Objective-C</a>
+              <a href="/tags/Security/" rel="tag"># Security</a>
+              <a href="/tags/Keychain/" rel="tag"># Keychain</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/11/03/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter9-Accelerate/" rel="prev" title="Accelerate">
+                  <i class="fa fa-chevron-left"></i> Accelerate
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/04/CFHipsterRef-Low-Level-Programming-on-iOS-OSX-Chapter11-System-Configuration/" rel="next" title="System Configuration">
+                  System Configuration <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments disqusjs">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我的眼里只有代码</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"dFo2NvCcL1s5zeJtuvzonGrj-gzGzoHsz","app_key":"3gyJUovHABTEqJVyX08exA3z","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/styles/disqusjs.css" integrity="sha256-71XarXwNr1Td27HmZI9zjY+rMzRdush6/glo6VFXp7o=" crossorigin="anonymous">
+
+<script class="next-config" data-name="disqusjs" type="application/json">{"enable":true,"api":"https://disqus.skk.moe/disqus/","apikey":"uj8xezGVZDTcz9VxvSxN8dCZF9vA2FgKyRXo2Bxfz3sAOc64cyH6GboKmy4KeAlZ","shortname":"ihappyhacking","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/disqusjs/3.0.2/disqusjs.es2015.umd.min.js","integrity":"sha256-okP99ZQKVpIy7+NogAMpGlIQzJa9XKXhIJcFgdju5bU="}}</script>
+<script src="/js/third-party/comments/disqusjs.js"></script>
+
+</body>
+</html>
