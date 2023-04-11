@@ -3825,7 +3825,7 @@
       </categories>
       <tags>
         <tag>GeeMoon</tag>
-        <tag>积木</tag>
+        <tag>积木记账</tag>
       </tags>
   </entry>
   <entry>
@@ -3917,7 +3917,7 @@
       </categories>
       <tags>
         <tag>GeeMoon</tag>
-        <tag>积木</tag>
+        <tag>积木记账</tag>
       </tags>
   </entry>
   <entry>
@@ -3976,7 +3976,7 @@
       </categories>
       <tags>
         <tag>GeeMoon</tag>
-        <tag>积木</tag>
+        <tag>积木记账</tag>
       </tags>
   </entry>
   <entry>
@@ -4035,7 +4035,7 @@
       </categories>
       <tags>
         <tag>GeeMoon</tag>
-        <tag>积木</tag>
+        <tag>积木记账</tag>
       </tags>
   </entry>
   <entry>
@@ -4083,7 +4083,7 @@
       </categories>
       <tags>
         <tag>GeeMoon</tag>
-        <tag>积木</tag>
+        <tag>积木记账</tag>
       </tags>
   </entry>
   <entry>
@@ -4131,7 +4131,7 @@
       </categories>
       <tags>
         <tag>GeeMoon</tag>
-        <tag>积木</tag>
+        <tag>积木记账</tag>
       </tags>
   </entry>
   <entry>
@@ -5508,6 +5508,28 @@
       </categories>
       <tags>
         <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>积木记账隐私政策 / GeeMoon Privacy Policy</title>
+    <url>/2023/04/11/GeeMoon-Privacy-Policy/</url>
+    <content><![CDATA[<p>积木记账 App Store 地址：<a href="https://apps.apple.com/cn/app/id1390979359">点这里</a></p>
+<span id="more"></span>
+
+<p><strong>更新时间：2023 年 4 月 11 日</strong><br><strong>Updated：April 11, 2023</strong></p>
+<p>您在使用积木记账过程中的所有用户敏感数据都只保存在本地，除非您选择上传到 iCloud，或是导出，但不会上传至我们的服务器，因为我没有搭建供积木记账使用的服务器。</p>
+<p>All user sensitive data in the process of using GeeMoon is only stored locally, unless you choose to upload to iCloud or export, but it will not be uploaded to our server, because I have not set up a server for GeeMoon .</p>
+<h2 id="信息收集-x2F-Infomation-Collect"><a href="#信息收集-x2F-Infomation-Collect" class="headerlink" title="信息收集 &#x2F; Infomation Collect"></a>信息收集 &#x2F; Infomation Collect</h2><p>我们尊重您的数据隐私，积木记账只会收集崩溃日志，且是匿名的，不会泄露您的任何隐私，默认开启，您可以在设置中进行关闭。</p>
+<p>We respect your data privacy. GeeMoon only collects crash logs, which are anonymous and will not reveal any of your privacy. It is enabled by default, and you can turn it off in the settings.</p>
+<h2 id="联系我-x2F-Contact-Me"><a href="#联系我-x2F-Contact-Me" class="headerlink" title="联系我 &#x2F; Contact Me"></a>联系我 &#x2F; Contact Me</h2><p>您可以在 App 中的”联系我“功能中找到我，您有任何意见或建议都可以联系我。邮箱地址：【<a href="mailto:&#99;&#x6f;&#100;&#x69;&#x6e;&#x67;&#x61;&#x6c;&#x6c;&#110;&#105;&#x67;&#104;&#x74;&#64;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;">&#99;&#x6f;&#100;&#x69;&#x6e;&#x67;&#x61;&#x6c;&#x6c;&#110;&#105;&#x67;&#104;&#x74;&#64;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;</a>】。</p>
+<p>You can find me in the “Contact Me” in the App, and you can contact me if you have any comments or suggestions. Email address: [<a href="mailto:&#99;&#111;&#100;&#105;&#x6e;&#103;&#97;&#x6c;&#x6c;&#110;&#105;&#x67;&#x68;&#116;&#x40;&#103;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;">&#99;&#111;&#100;&#105;&#x6e;&#103;&#97;&#x6c;&#x6c;&#110;&#105;&#x67;&#x68;&#116;&#x40;&#103;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;</a>].</p>
+]]></content>
+      <categories>
+        <category>个人项目</category>
+      </categories>
+      <tags>
+        <tag>GeeMoon</tag>
+        <tag>积木记账</tag>
       </tags>
   </entry>
 </search>
