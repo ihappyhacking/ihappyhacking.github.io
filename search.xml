@@ -4087,43 +4087,74 @@
       </tags>
   </entry>
   <entry>
-    <title>积木使用小技巧</title>
+    <title>积木使用小技巧 / GeeMoon Use Tips</title>
     <url>/2018/06/06/app-geemoon-tips/</url>
-    <content><![CDATA[<p>可以在 “<a href="https://itunes.apple.com/cn/app/apple-store/id1390979359?mt=8">积木</a>” -&gt; “更多” -&gt; “小技巧” 找到这篇文章的入口。</p>
-<p>有任何问题、建议或 Bug 都可以点击 “<a href="https://itunes.apple.com/cn/app/apple-store/id1390979359?mt=8">积木</a>” 中的 “更多” -&gt; “联系我” 来给我发邮件。或者直接发送到 <a href="mailto:codingallnight@gmail.com">codingallnight@gmail.com</a>。</p>
-<p>或者可以在微博上 at 我 <a href="https://weibo.com/fuckingcode">@我的眼里只有代码</a>。</p>
+    <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/04/11/34mDRlvJC61Wgk5.jpg" alt="来源：Pixabay"></p>
+<!--可以在 “[积木](https://itunes.apple.com/cn/app/apple-store/id1390979359?mt=8)” -> “更多” -> “小技巧” 找到这篇文章的入口。
+
+有任何问题、建议或 Bug 都可以点击 “[积木](https://itunes.apple.com/cn/app/apple-store/id1390979359?mt=8)” 中的 “更多” -> “联系我” 来给我发邮件。或者直接发送到 [codingallnight@gmail.com](mailto:codingallnight@gmail.com)。
+
+或者可以在微博上 at 我 [@我的眼里只有代码](https://weibo.com/fuckingcode)。-->
+
 <!-- 其他社交账号也可以在我博客的资料页面里面找到（手机端浏览器可能是没有资料页面的）。 -->
+
+<!--[English](https://meilbn.com/2018/06/08/app-geemoon-tips-en/)-->
+
 <span id="more"></span>
 
-<p><a href="https://meilbn.com/2018/06/08/app-geemoon-tips-en/">English</a></p>
-<h1 id="0x00-小技巧列表"><a href="#0x00-小技巧列表" class="headerlink" title="0x00 小技巧列表"></a>0x00 小技巧列表</h1><ul>
-<li><a href="#title_overview">概览界面</a></li>
-<li><a href="#title_calculator">计算器界面</a></li>
-<li><a href="#title_transactions">创建 &#x2F; 编辑交易</a></li>
-<li><a href="#title_others">其他</a></li>
+<h1 id="0x00-小技巧列表-x2F-Table-of-Tips"><a href="#0x00-小技巧列表-x2F-Table-of-Tips" class="headerlink" title="0x00 小技巧列表 &#x2F; Table of Tips"></a>0x00 小技巧列表 &#x2F; Table of Tips</h1><ul>
+<li><a href="#title_overview">概览 &#x2F; Overview</a></li>
+<li><a href="#title_account">账户 &#x2F; Account</a></li>
+<li><a href="#title_transactions">交易 &#x2F; Transaction</a></li>
+<li><a href="#title_calculator">计算器 &#x2F; Calculator</a></li>
+<li><a href="#title_category">分类 &#x2F; Category</a></li>
+<li><a href="#title_others">其他 &#x2F; Others</a></li>
 </ul>
 <p><span id="title_overview"></span></p>
-<h1 id="0x01-概览界面"><a href="#0x01-概览界面" class="headerlink" title="0x01 概览界面"></a>0x01 概览界面</h1><ul>
-<li>总余额（金额）双击隐藏或展示</li>
-<li>点击账户（列表）进入所有账户列表</li>
-<li>在概览界面摇晃手机，打开新增交易界面（后期可配置）</li>
+<h1 id="0x01-概览-x2F-Overview"><a href="#0x01-概览-x2F-Overview" class="headerlink" title="0x01 概览 &#x2F; Overview"></a>0x01 概览 &#x2F; Overview</h1><ul>
+<li>双击总余额（金额）可以切换金额的隐藏或显示，也可以在“更多”-&gt;“显示样式”中开启或关闭。</li>
+<li>点击“收入”或“支出”，显示当前周期内的收入或支出的交易列表。</li>
+<li>点击账户（列表）进入所有账户列表界面。</li>
+<li>趋势默认收支分开显示，可以去“显示样式”中修改，只显示某一个或者合并成一个显示。<!-- - 隐藏小功能：在概览界面摇晃手机，可以打开新增交易界面。 --></li>
 </ul>
-<p><span id="title_calculator"></span></p>
-<h1 id="0x02-计算器界面"><a href="#0x02-计算器界面" class="headerlink" title="0x02 计算器界面"></a>0x02 计算器界面</h1><ul>
-<li>点击“等号”计算结果或者返回编辑界面</li>
+<p><img data-src="https://s2.loli.net/2023/04/15/WsDEfmkhXg5cQqN.png" alt="Overview"></p>
+<p><span id="title_account"></span></p>
+<h1 id="0x02-账户-x2F-Account"><a href="#0x02-账户-x2F-Account" class="headerlink" title="0x02 账户 &#x2F; Account"></a>0x02 账户 &#x2F; Account</h1><ul>
+<li>想要连续浏览某一个账户的所有交易：点击“账户列表” -&gt; 点击“账户”进入详情 -&gt; 点击详情右上角第一个列表按钮来查看，对账时比较方便。也可以使用“高级搜索”来筛选。</li>
 </ul>
 <p><span id="title_transactions"></span></p>
-<h1 id="0x03-创建-x2F-编辑交易"><a href="#0x03-创建-x2F-编辑交易" class="headerlink" title="0x03 创建 &#x2F; 编辑交易"></a>0x03 创建 &#x2F; 编辑交易</h1><ul>
-<li>长按顶部金额视图会重置金额为 0</li>
-<li>再次点击已选中的分类取消选中</li>
-<li>长按日期重置为当前日期</li>
-<li>长按时间重置为当前时间</li>
-<li>在交易列表界面摇晃手机，打开新增交易界面（后期可配置）</li>
+<h1 id="0x03-交易-x2F-Transaction"><a href="#0x03-交易-x2F-Transaction" class="headerlink" title="0x03 交易 &#x2F; Transaction"></a>0x03 交易 &#x2F; Transaction</h1><ul>
+<li>交易列表任意一处长按，可进入多选模式，可以多选删除，或者统计选中的交易的收支金额。</li>
 </ul>
+<p><img data-src="https://s2.loli.net/2023/04/15/Y1oheUOn467bydp.png" alt="Transactions"></p>
+<ul>
+<li>顶部金额输入框右侧上方按钮为选择模板。</li>
+<li>顶部金额输入框右侧下方按钮为计算器，可以做加减乘除运算。</li>
+<li>分类可以左右滑动选择。</li>
+<li>再次点击已选中的分类可取消选中。<!-- - 长按日期重置为当前日期 -->
+<!-- - 长按时间重置为当前时间 -->
+<!-- - 在交易列表界面摇晃手机，打开新增交易界面 --></li>
+</ul>
+<p><img data-src="https://s2.loli.net/2023/04/15/F7Pm9dGr6DnqWAk.png" alt="Add Transaction"></p>
+<p><span id="title_calculator"></span></p>
+<h1 id="0x04-计算器-x2F-Calculator"><a href="#0x04-计算器-x2F-Calculator" class="headerlink" title="0x04 计算器 &#x2F; Calculator"></a>0x04 计算器 &#x2F; Calculator</h1><ul>
+<li>点击“等号”计算结果或者返回到上一个界面。</li>
+</ul>
+<p><img data-src="https://s2.loli.net/2023/04/15/27M6RPLWGboUQAC.png" alt="Calculator"></p>
+<p><span id="title_category"></span></p>
+<h1 id="0x05-分类-x2F-Category"><a href="#0x05-分类-x2F-Category" class="headerlink" title="0x05 分类 &#x2F; Category"></a>0x05 分类 &#x2F; Category</h1><ul>
+<li>点击右上角画板按钮，可以选择一键给所有分类设置颜色：<ul>
+<li>随机：随机选择 App 内置颜色中的一个。</li>
+<li>选取颜色：打开颜色选择界面，自己选择一个喜欢的颜色，将所有分类设置为这个颜色。</li>
+<li>漂亮模式：只是个人建议，多色图标的分类，颜色会设置为默认的 #EEEEEE，单色或者没有设置图标的分类，会随机一个颜色。ps：跟选取一个颜色类似，多色图标的分类按这个选择设置之后，在报表界面，饼状图就会都显示为一种颜色了，对这个比较在意的，请使用“随机”或者自己修改各个分类的颜色。</li>
+</ul>
+</li>
+</ul>
+<p><img data-src="https://s2.loli.net/2023/04/15/orw61HiJtFDYPNu.png" alt="Category"></p>
 <p><span id="title_others"></span></p>
-<h1 id="0x04-其他"><a href="#0x04-其他" class="headerlink" title="0x04 其他"></a>0x04 其他</h1><ul>
-<li>日历、交易列表和预算交易列表界面支持 3D Touch 预览</li>
-<li>软件图标 3D Touch 快速新建交易</li>
+<h1 id="0x06-其他-x2F-Others"><a href="#0x06-其他-x2F-Others" class="headerlink" title="0x06 其他 &#x2F; Others"></a>0x06 其他 &#x2F; Others</h1><ul>
+<li>所有交易列表均支持 3D Touch 预览。</li>
+<li>手机桌面，App Icon 也支持 3D Touch 菜单，快速新建交易</li>
 </ul>
 ]]></content>
       <categories>
@@ -5521,8 +5552,8 @@
 <p>All user sensitive data in the process of using GeeMoon is only stored locally, unless you choose to upload to iCloud or export, but it will not be uploaded to our server, because I have not set up a server for GeeMoon .</p>
 <h2 id="信息收集-x2F-Infomation-Collect"><a href="#信息收集-x2F-Infomation-Collect" class="headerlink" title="信息收集 &#x2F; Infomation Collect"></a>信息收集 &#x2F; Infomation Collect</h2><p>我们尊重您的数据隐私，积木记账只会收集崩溃日志，且是匿名的，不会泄露您的任何隐私，默认开启，您可以在设置中进行关闭。</p>
 <p>We respect your data privacy. GeeMoon only collects crash logs, which are anonymous and will not reveal any of your privacy. It is enabled by default, and you can turn it off in the settings.</p>
-<h2 id="联系我-x2F-Contact-Me"><a href="#联系我-x2F-Contact-Me" class="headerlink" title="联系我 &#x2F; Contact Me"></a>联系我 &#x2F; Contact Me</h2><p>您可以在 App 中的”联系我“功能中找到我，您有任何意见或建议都可以联系我。邮箱地址：【<a href="mailto:&#99;&#x6f;&#100;&#x69;&#x6e;&#x67;&#x61;&#x6c;&#x6c;&#110;&#105;&#x67;&#104;&#x74;&#64;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;">&#99;&#x6f;&#100;&#x69;&#x6e;&#x67;&#x61;&#x6c;&#x6c;&#110;&#105;&#x67;&#104;&#x74;&#64;&#x67;&#109;&#x61;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;</a>】。</p>
-<p>You can find me in the “Contact Me” in the App, and you can contact me if you have any comments or suggestions. Email address: [<a href="mailto:&#99;&#111;&#100;&#105;&#x6e;&#103;&#97;&#x6c;&#x6c;&#110;&#105;&#x67;&#x68;&#116;&#x40;&#103;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;">&#99;&#111;&#100;&#105;&#x6e;&#103;&#97;&#x6c;&#x6c;&#110;&#105;&#x67;&#x68;&#116;&#x40;&#103;&#109;&#x61;&#x69;&#108;&#x2e;&#x63;&#111;&#109;</a>].</p>
+<h2 id="联系我-x2F-Contact-Me"><a href="#联系我-x2F-Contact-Me" class="headerlink" title="联系我 &#x2F; Contact Me"></a>联系我 &#x2F; Contact Me</h2><p>您可以在 App 中的”联系我“功能中找到我，您有任何意见或建议都可以联系我。邮箱地址：【<a href="mailto:&#99;&#111;&#x64;&#x69;&#110;&#103;&#97;&#108;&#108;&#x6e;&#x69;&#103;&#x68;&#x74;&#64;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;">&#99;&#111;&#x64;&#x69;&#110;&#103;&#97;&#108;&#108;&#x6e;&#x69;&#103;&#x68;&#x74;&#64;&#x67;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#99;&#x6f;&#109;</a>】。</p>
+<p>You can find me in the “Contact Me” in the App, and you can contact me if you have any comments or suggestions. Email address: [<a href="mailto:&#99;&#x6f;&#x64;&#105;&#110;&#103;&#x61;&#108;&#108;&#110;&#105;&#103;&#104;&#x74;&#x40;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#109;">&#99;&#x6f;&#x64;&#105;&#110;&#103;&#x61;&#108;&#108;&#110;&#105;&#103;&#104;&#x74;&#x40;&#x67;&#109;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#109;</a>].</p>
 ]]></content>
       <categories>
         <category>个人项目</category>
