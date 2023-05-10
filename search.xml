@@ -5563,4 +5563,31 @@
         <tag>积木记账</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Mac VS Code 安装 Go 相关的插件（扩展）报错 “permission denied”</title>
+    <url>/2023/05/10/vscode-install-extensions-permission-denied/</url>
+    <content><![CDATA[<p>最近重新开始复习了下 Go，计划用 Go 做新 App 的后端 api，开始是用 vs code 来做开发，但是不知道为何右下角的提示安装弹窗，安装 go 相关的插件总是报错 “permission denied”，试过在 iTerm 里面运行命令，但是 vs code 里面还是无法使用，遂去使用 GoLand。</p>
+<p>GoLand 倒还好，自动导入包，跳转都没问题，但是习惯了 Xcode 开发，有些快捷键不一样，又懒得一个个去改，可能跟其他快捷键还会有冲突，而且开发起来也没那么舒服，想着还是回到 vs code，看看有啥解决办法。</p>
+<span id="more"></span>
+
+<p>网上比如 StackOverFlow 上找到一些方法试了下，没啥用，后来找到了解决办法，就是修改 go 的 bin 目录权限，安装了 go 之后，它的权限是：</p>
+<p><img data-src="https://s2.loli.net/2023/05/10/wkWfUlo75zJR4SH.png" alt="go bin 目录默认权限"></p>
+<p>可以看到 bin 目录权限为：drwxr-xr-x</p>
+<p>将其修改为 <code>drwxrwxrwx</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod -R 777 /usr/local/go/bin</span><br></pre></td></tr></table></figure>
+
+<!--![修改 bin 目录权限](https://s2.loli.net/2023/05/10/VfRQS37AvTzmgY2.png)-->
+
+<p>改完之后就是 <code>drwxrwxrwx</code>：</p>
+<p><img data-src="https://s2.loli.net/2023/05/10/YwlqLV9QiyZ1hpt.png" alt="go bin 目录新权限"></p>
+<p>然后再回到 vs code，再去安装 go 相关的插件，就没有问题了。</p>
+]]></content>
+      <categories>
+        <category>Go</category>
+      </categories>
+      <tags>
+        <tag>Mac</tag>
+        <tag>Go</tag>
+      </tags>
+  </entry>
 </search>
