@@ -5571,7 +5571,7 @@
 <span id="more"></span>
 
 <p>网上比如 StackOverFlow 上找到一些方法试了下，没啥用，后来找到了解决办法，就是修改 go 的 bin 目录权限，安装了 go 之后，它的权限是：</p>
-<p><img data-src="https://s2.loli.net/2023/05/10/wkWfUlo75zJR4SH.png" alt="go bin 目录默认权限"></p>
+<p><img data-src="https://s2.loli.net/2023/05/10/GWYUdn8DVRE1tfT.png" alt="go bin 目录默认权限"></p>
 <p>可以看到 bin 目录权限为：drwxr-xr-x</p>
 <p>将其修改为 <code>drwxrwxrwx</code>：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo chmod -R 777 /usr/local/go/bin</span><br></pre></td></tr></table></figure>
@@ -5579,7 +5579,7 @@
 <!--![修改 bin 目录权限](https://s2.loli.net/2023/05/10/VfRQS37AvTzmgY2.png)-->
 
 <p>改完之后就是 <code>drwxrwxrwx</code>：</p>
-<p><img data-src="https://s2.loli.net/2023/05/10/YwlqLV9QiyZ1hpt.png" alt="go bin 目录新权限"></p>
+<p><img data-src="https://s2.loli.net/2023/05/10/sPFzcnBvpoAxGd5.png" alt="go bin 目录新权限"></p>
 <p>然后再回到 vs code，再去安装 go 相关的插件，就没有问题了。</p>
 ]]></content>
       <categories>
