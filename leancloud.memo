@@ -52,6 +52,6 @@
 {"title":"Apple Developer Account 添加设备之后 status 显示 ineligible for 7/14/30 days","url":"/2023/03/31/apple-developer-account-add-device-status-ineligible-for-7-days/"},
 {"title":"积木记账隐私政策 / GeeMoon Privacy Policy","url":"/2023/04/11/GeeMoon-Privacy-Policy/"},
 {"title":"Mac VS Code 安装 Go 相关的插件（扩展）报错 “permission denied”","url":"/2023/05/10/vscode-install-extensions-permission-denied/"},
-{"title":"Xcode 15 项目编译报错：Assertion failed (false && "compact unwind compressed function offset doesn't fit in 24 bits"), function operator(), file Layout.cpp, line 5758.","url":"/2023/11/10/Xcode-build-error-Assertion-failed-compact-unwind-compressed-function-offset-doesn-t-fit-in-24-bits/"},
-{"title":"Xcode 15 项目编译报错：Could not find module 'xxx' for target 'x86_64-apple-ios-simulator'; found arm64-apple-ios-simulator","url":"/2023/11/10/Xcode-build-error-Could-not-find-module-xxx-for-target-x86-64-found-arm64/"},
+{"title":"Xcode 15 项目编译报错：Assertion failed (false && compact unwind compressed function offset doesn't fit in 24 bits), function operator(), file Layout.cpp, line 5758.","url":"/2023/11/10/Xcode-build-error-Assertion-failed-compact-unwind-compressed-function-offset-doesn-t-fit-in-24-bits/"},
+{"title":"Xcode 15 项目编译报错：Could not find module xxx for target x86_64-apple-ios-simulator found arm64-apple-ios-simulator","url":"/2023/11/10/Xcode-build-error-Could-not-find-module-xxx-for-target-x86-64-found-arm64/"},
 ]
