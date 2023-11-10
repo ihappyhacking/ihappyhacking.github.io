@@ -5591,7 +5591,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Xcode 15 项目编译报错：Could not find module &#39;xxx&#39; for target &#39;x86_64-apple-ios-simulator&#39;; found arm64-apple-ios-simulator</title>
+    <title>Xcode 15 项目编译报错：Could not find module xxx for target x86_64-apple-ios-simulator found arm64-apple-ios-simulator</title>
     <url>/2023/11/10/Xcode-build-error-Could-not-find-module-xxx-for-target-x86-64-found-arm64/</url>
     <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/11/10/GL8ArkBljS7DI3U.png" alt="Error"></p>
 <span id="more"></span>
@@ -5619,7 +5619,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Xcode 15 项目编译报错：Assertion failed (false &amp;&amp; &quot;compact unwind compressed function offset doesn&#39;t fit in 24 bits&quot;), function operator(), file Layout.cpp, line 5758.</title>
+    <title>Xcode 15 项目编译报错：Assertion failed (false &amp;&amp; compact unwind compressed function offset doesn&#39;t fit in 24 bits), function operator(), file Layout.cpp, line 5758.</title>
     <url>/2023/11/10/Xcode-build-error-Assertion-failed-compact-unwind-compressed-function-offset-doesn-t-fit-in-24-bits/</url>
     <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/11/10/1zX5SMWUwGamsRi.png" alt="Error"></p>
 <span id="more"></span>
