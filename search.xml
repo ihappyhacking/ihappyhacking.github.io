@@ -5636,4 +5636,96 @@
         <tag>Xcode</tag>
       </tags>
   </entry>
+  <entry>
+    <title>EveryThing 使用小技巧</title>
+    <url>/2023/12/27/app-everything-tips/</url>
+    <content><![CDATA[<p>可以在 “<a href="https://itunes.apple.com/cn/app/apple-store/id1564541053?mt=8">EveryThing</a>” -&gt; 底部“更多” -&gt; “使用小技巧” 找到这篇文章的入口。</p>
+<p>有任何问题、建议或 Bug 都可以点击 “<a href="https://itunes.apple.com/cn/app/apple-store/id1564541053?mt=8">EveryThing</a>” 中的 底部“更多” -&gt; “意见反馈” 或 “联系我” 来给我发邮件。或者直接发送到 <a href="mailto:codingallnight@gmail.com">codingallnight@gmail.com</a>。</p>
+<p>或者可以在微博上 at 我 <a href="https://weibo.com/fuckingcode">@我的眼里只有代码</a>。</p>
+<!-- 其他社交账号也可以在我博客的资料页面里面找到（手机端浏览器可能是没有资料页面的）。 -->
+<span id="more"></span>
+
+<h1 id="首页"><a href="#首页" class="headerlink" title="首页"></a>首页</h1><img data-src="https://webimg.meilb.com/everything_app/tips/app_index.png" alt="" height="600">
+
+<ol>
+<li>查看所有的家。</li>
+<li>搜索空间和物品。</li>
+<li>扫描物品条形码，可以查找物品，没有找到物品时，可以添加物品。</li>
+<li>添加空间。</li>
+<li>查看所有家下的一级空间，长按可以拖动排序。</li>
+<li>添加物品。</li>
+</ol>
+<h1 id="家"><a href="#家" class="headerlink" title="家"></a>家</h1><img data-src="https://webimg.meilb.com/everything_app/tips/homes.png" alt="" height="600">
+
+<ol>
+<li>表示当前默认的家。</li>
+<li>在地图上查看所有家所在的位置（设置了地理位置的家）。</li>
+</ol>
+<h1 id="物品"><a href="#物品" class="headerlink" title="物品"></a>物品</h1><div style="display: flex; flex-direction: row;">
+  <div style="width: 50%; text-align: center;">
+    <img data-src="https://webimg.meilb.com/everything_app/tips/edit_item_0.png" alt="" height="500">
+  </div>
+  <div style="width: 50%; text-align: center;">
+    <img data-src="https://webimg.meilb.com/everything_app/tips/edit_item_1.png" alt="" height="500">
+  </div>
+</div>
+
+<ol>
+<li>橡皮擦：点击后，进入橡皮擦模式，点击已设置的信息，可以将其重置，比如：生产日期、过期时间、分类、标签等。</li>
+<li>设置时间：可以给生产日期和过期时间设置具体的时间点（到分）。</li>
+<li>位置点：可以设置物品所在的具体位置，可以选择家中的户型图或父级空间的图片作为位置图，在图上放置位置点，标识所在位置。</li>
+<li>更换提醒：用于周期性地提醒自己更换某些物品，如：毛巾、牙刷、内衣等。</li>
+<li>关联物品：方便查看有相关性的物品，不用再单独去找或者搜索。比如物品“电脑”，可以添加关联物品：键盘、鼠标、移动硬盘等。</li>
+</ol>
+<img data-src="https://webimg.meilb.com/everything_app/tips/item_details.png" alt="" height="600">
+
+<ol>
+<li>有这个图标则表示已设置了提醒，没有则表示没有设置提醒。</li>
+<li>添加物品记录，记录内容支持添加“#”号显示标签，标签可以点击，查找所有包含此标签的物品记录。</li>
+<li>物品操作按钮，从上到下依次是：移动物品，编辑物品，删除物品。</li>
+</ol>
+<h1 id="收藏"><a href="#收藏" class="headerlink" title="收藏"></a>收藏</h1><img data-src="https://webimg.meilb.com/everything_app/tips/favorites.png" alt="" height="600">
+
+<p>收藏的空间和物品会显示在这里，可以更方便地找到常用的空间或物品。</p>
+<h1 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h1><img data-src="https://webimg.meilb.com/everything_app/tips/edit_category.png" alt="" height="600">
+
+<ol>
+<li>使用范围：</li>
+</ol>
+<ul>
+<li>全局：在所有家下都可以使用。</li>
+<li>当前家：只在当前选择的家下可以使用。</li>
+</ul>
+<ol start="2">
+<li>属性：可以添加多个自定义的属性，当设置一个物品为此分类时，属性列表将会添加到物品的属性列表中，支持修改。可以方便地设置某些物品的通用属性。</li>
+</ol>
+<h1 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h1><img data-src="https://webimg.meilb.com/everything_app/tips/items_arrange.png" alt="" height="600">
+
+<ol>
+<li>设置物品的排列显示方式：</li>
+</ol>
+<div style="display: flex; flex-direction: row;">
+  <div style="width: 50%; text-align: center;">
+    <img data-src="https://webimg.meilb.com/everything_app/tips/multi_cols.png" alt="" height="500">
+    <div>
+      <p>多列</p>
+    </div>
+  </div>
+  <div style="width: 50%; text-align: center;">
+    <img data-src="https://webimg.meilb.com/everything_app/tips/single_row.png" alt="" height="500">
+    <div>
+      <p>单行</p>
+    </div>
+  </div>
+</div>
+
+
+]]></content>
+      <categories>
+        <category>个人项目</category>
+      </categories>
+      <tags>
+        <tag>EveryThing</tag>
+      </tags>
+  </entry>
 </search>
