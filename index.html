@@ -95,7 +95,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">68</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">56</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">68</span></a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -208,6 +208,107 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2024/09/19/how-can-i-get-ipa-of-any-app-which-is-available-on-app-store/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="我的眼里只有代码">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Happy Hacking">
+      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Happy Hacking">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/09/19/how-can-i-get-ipa-of-any-app-which-is-available-on-app-store/" class="post-title-link" itemprop="url">如何获取 App Store 上任意一个 iOS app 的安装包</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-09-19 09:45:14 / 修改时间：11:12:32" itemprop="dateCreated datePublished" datetime="2024-09-19T09:45:14+08:00">2024-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2024/09/19/how-can-i-get-ipa-of-any-app-which-is-available-on-app-store/" class="post-meta-item leancloud_visitors" data-flag-title="如何获取 App Store 上任意一个 iOS app 的安装包" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>经常抄（啊呸，借鉴）别人 App 设计（或功能）的同学，肯定经常要分析其他人的 App，UI 的话，我一般都是搭配 <code>Reveal</code> 来窥探，看看那些 App 的 UI 结构，因为可以看出一个视图的类名，如果是用了第三方库的话，就能根据这个类名，找到对应的库，就可以直接拿来用，实现几乎一样的效果。</p>
+<p>但是如果是功能性的，没有 UI 界面的，这个时候 <code>Reveal</code> 就无能为力了。此时，我们就需要获取这个 App 的安装包，查看里面集成了哪些 SDK。</p>
+<p>这时候，我们有几个办法。</p>
+<ol>
+<li><p>通过一个已经越狱了的手机，下载安装目标 App，然后根据我之前写过的<a href="https://meilbn.com/2015/08/19/iosre-find-app-installation-and-sandbox-directory/">这个文章</a>来导出已解密的 App。</p>
+</li>
+<li><p>如果手上没有合适的已越狱的手机，那么就祭出 Apple 官方提供的 <code>Apple Configurator</code>，下载地址在<a target="_blank" rel="noopener" href="https://apps.apple.com/app/id1037126344">这里</a>。</p>
+</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/09/19/how-can-i-get-ipa-of-any-app-which-is-available-on-app-store/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1061,107 +1162,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/10/19/iOS-read-txt-file-mojibake-solution/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://meilbn.com/2019/08/23/install-reveal2loader-on-jailbreak-device-ios12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="我的眼里只有代码">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Happy Hacking">
-      <meta itemprop="description" content="You are the code of my eye.<br>'Cause you are the apple of my eye.">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Happy Hacking">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/08/23/install-reveal2loader-on-jailbreak-device-ios12/" class="post-title-link" itemprop="url">iOS 12.4 使用 unc0ver 越狱之后安装 Reveal2Loader</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-08-23 10:58:32" itemprop="dateCreated datePublished" datetime="2019-08-23T10:58:32+08:00">2019-08-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2019-10-19 22:59:13" itemprop="dateModified" datetime="2019-10-19T22:59:13+08:00">2019-10-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%B6%8A%E7%8B%B1/" itemprop="url" rel="index"><span itemprop="name">越狱</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2019/08/23/install-reveal2loader-on-jailbreak-device-ios12/" class="post-meta-item leancloud_visitors" data-flag-title="iOS 12.4 使用 unc0ver 越狱之后安装 Reveal2Loader" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="https://i.loli.net/2019/10/19/9h4jtFiJQcuGgdn.jpg" alt="Uncover Jailbreak"></p>
-<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>昨天刷微博发现 iOS 12.4 也可以越狱了（虽然是所谓的不完美越狱，也就是重启设备之后会回到未越狱状态，需要重新越狱一次，不过也没事），就拿开发备用机 iPhone 6s 去试了。</p>
-<p>越狱教程地址：<a target="_blank" rel="noopener" href="https://github.com/pwn20wndstuff/Undecimus">GitHub</a>，要是过程不清楚的，可以看<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/58097735">这个教程</a>。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/08/23/install-reveal2loader-on-jailbreak-device-ios12/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

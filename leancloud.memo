@@ -54,4 +54,5 @@
 {"title":"Mac VS Code 安装 Go 相关的插件（扩展）报错 “permission denied”","url":"/2023/05/10/vscode-install-extensions-permission-denied/"},
 {"title":"Xcode 15 项目编译报错：Assertion failed (false && compact unwind compressed function offset doesn't fit in 24 bits), function operator(), file Layout.cpp, line 5758.","url":"/2023/11/10/Xcode-build-error-Assertion-failed-compact-unwind-compressed-function-offset-doesn-t-fit-in-24-bits/"},
 {"title":"Xcode 15 项目编译报错：Could not find module xxx for target x86_64-apple-ios-simulator found arm64-apple-ios-simulator","url":"/2023/11/10/Xcode-build-error-Could-not-find-module-xxx-for-target-x86-64-found-arm64/"},
+{"title":"EveryThing 使用小技巧","url":"/2023/12/27/app-everything-tips/"},
 ]
